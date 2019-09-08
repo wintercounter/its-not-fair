@@ -80,7 +80,7 @@ export const getNeighboursByCoords = function(x, y, width, height) {
                 (rows[_x][_y].x === x + width && rows[_x][_y].y === y + height) ||
                 (rows[_x][_y].x === x && rows[_x][_y].y === y + height)
             ) {
-                continue
+                continue // eslint-disable-line
             }
             neightbours.push(rows[_x][_y])
         }
