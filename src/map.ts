@@ -25,9 +25,9 @@ const rows = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -44,8 +44,8 @@ const rows = [
 ].map((cells, rowI) => {
     return cells.map((cell, cellI) => {
         const graphics = new PIXI.Graphics()
-        const x = cellSize * rowI
-        const y = cellSize * cellI
+        const x = cellSize * cellI
+        const y = cellSize * rowI
 
         graphics.beginFill(cellProps[cell].fill)
         graphics.drawRect(x, y, cellSize, cellSize)
@@ -64,11 +64,11 @@ const rows = [
 })
 
 export const getNeighboursByCoords = function(x, y, width, height) {
-    const x1 = Math.max(0, Math.floor((x - width / 2) / cellSize))
-    const x2 = Math.min(Math.floor((x + width / 2) / cellSize), rows.length - 1)
+    const x1 = Math.max(0, Math.floor((y - width / 2) / cellSize))
+    const x2 = Math.min(Math.floor((y + width / 2) / cellSize), rows.length - 1)
 
-    const y1 = Math.max(0, Math.floor((y - height / 2) / cellSize))
-    const y2 = Math.min(Math.floor((y + height / 2) / cellSize), rows[0].length - 1)
+    const y1 = Math.max(0, Math.floor((x - height / 2) / cellSize))
+    const y2 = Math.min(Math.floor((x + height / 2) / cellSize), rows[0].length - 1)
 
     const neightbours = []
     for (let _x = x1; _x <= x2; _x++) {
