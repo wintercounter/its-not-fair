@@ -13,6 +13,8 @@ const LEFT = 'left'
 let type = 'WebGL'
 let PacMan
 let CurrentDirection = RIGHT
+let Player1, Player1a
+let pausePlayer = false
 
 if (!PIXI.utils.isWebGLSupported()) {
     type = 'canvas'
@@ -62,9 +64,11 @@ const tryStep = function({_vx, _vy, _angle, _direction}) {
                 graphics.containsPoint(new PIXI.Point(x + diff, y - diff))
             )
         ) {
+            pausePlayer = CurrentDirection === _direction
             return false
         }
     }
+    pausePlayer = false
     PacMan.angle = _angle
     PacMan.x = x
     PacMan.y = y
@@ -72,9 +76,14 @@ const tryStep = function({_vx, _vy, _angle, _direction}) {
     return true
 }
 
-const gameLoop = function() {
+let playerState = 0
+const gameLoop = function(delta) {
+    if (!pausePlayer && playerState++ > 4) {
+        Player1a.visible = !Player1a.visible
+        playerState = 0
+    }
+
     // Check buffered direction first
-    console.log(CurrentDirection, PacMan._direction)
     if (PacMan._direction !== CurrentDirection && tryStep(DIRECTION_PROPS[PacMan._direction])) {
 
     }
@@ -86,24 +95,24 @@ const gameLoop = function() {
 const DIRECTION_PROPS = {
     [UP]: {
         _vx: 0,
-        _vy: -5,
+        _vy: -3,
         _angle: 270,
         _direction: UP
     },
     [RIGHT]: {
-        _vx: 5,
+        _vx: 3,
         _vy: 0,
         _angle: 0,
         _direction: RIGHT
     },
     [DOWN]: {
         _vx: 0,
-        _vy: 5,
+        _vy: 3,
         _angle: 90,
         _direction: DOWN
     },
     [LEFT]: {
-        _vx: -5,
+        _vx: -3,
         _vy: 0,
         _angle: 180,
         _direction: LEFT
@@ -112,16 +121,33 @@ const DIRECTION_PROPS = {
 
 const setup = function(loader) {
     PacMan = new PIXI.Container()
-    const Player = new PIXI.Sprite(loader.resources[SpritePacMan].texture)
-    Player.anchor.set(0.5)
-    PacMan.addChild(Player)
+    //const Player = new PIXI.Sprite(loader.resources[SpritePacMan].texture)
+    // pacman
+    Player1 = new PIXI.Graphics();
+    Player1.beginFill(0xff9900);
+    Player1.arc(0, 0, 30, Math.PI/5,-Math.PI/5,false);
+    Player1.lineTo(0, 0);
+    Player1.endFill();
+    Player1.x = 0;
+    Player1.y = 0;
+
+    Player1a = new PIXI.Graphics();
+    Player1a.beginFill(0xff9900);
+    Player1a.arc(0, 0, 30, Math.PI/15,-Math.PI/15,false);
+    Player1a.lineTo(0, 0);
+    Player1a.endFill();
+    Player1a.x = 0;
+    Player1a.y = 0;
+    PacMan.addChild(Player1)
+    PacMan.addChild(Player1a)
 
     app.stage.addChild(Map)
     app.stage.addChild(PacMan)
     PacMan._vx = 0
     PacMan._vy = 0
     PacMan._direction = RIGHT
-
+    PacMan.x = 45
+    PacMan.y = 45
     PacMan.width = 30
     PacMan.height = 30
 
