@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import Hammer from 'hammerjs'
 
 import Map, { getNeighboursByCoords } from './map'
 import keyboard from './keyboard'
@@ -15,6 +16,7 @@ let PacMan
 let CurrentDirection = RIGHT
 let Player1, Player1a
 let pausePlayer = false
+let touchTravels = [0, 0]
 
 if (!PIXI.utils.isWebGLSupported()) {
     type = 'canvas'
@@ -169,5 +171,17 @@ const setup = function(loader) {
 
     app.ticker.add(gameLoop)
 }
+
+console.log(Hammer)
+
+const canvasEl = document.querySelector('canvas')
+const mc = new Hammer(canvasEl);
+mc.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 10 });
+
+// listen to events...
+mc.on("panleft panright panup pandown", function(ev) {
+    console.log(ev.type, ev.velocity)
+    Math.abs(ev.velocity) > 0.2 && (PacMan._direction = ev.type.replace('pan', ''))
+});
 
 app.loader.add(SpritePacMan).load(setup)
