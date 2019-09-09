@@ -125,7 +125,7 @@ const setup = function(loader) {
     // pacman
     Player1 = new PIXI.Graphics();
     Player1.beginFill(0xff9900);
-    Player1.arc(0, 0, 30, Math.PI/5,-Math.PI/5,false);
+    Player1.arc(0, 0, 60, Math.PI/5,-Math.PI/5,false);
     Player1.lineTo(0, 0);
     Player1.endFill();
     Player1.x = 0;
@@ -133,16 +133,18 @@ const setup = function(loader) {
 
     Player1a = new PIXI.Graphics();
     Player1a.beginFill(0xff9900);
-    Player1a.arc(0, 0, 30, Math.PI/15,-Math.PI/15,false);
+    Player1a.arc(0, 0, 60, Math.PI/15,-Math.PI/15,false);
     Player1a.lineTo(0, 0);
     Player1a.endFill();
     Player1a.x = 0;
     Player1a.y = 0;
+
     PacMan.addChild(Player1)
     PacMan.addChild(Player1a)
 
     app.stage.addChild(Map)
     app.stage.addChild(PacMan)
+
     PacMan._vx = 0
     PacMan._vy = 0
     PacMan._direction = RIGHT
