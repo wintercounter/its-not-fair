@@ -58,7 +58,10 @@ const gameLoop = function() {
         if (
             !walkThrough &&
             (graphics.containsPoint(new PIXI.Point(x - diff, y - diff)) ||
-                graphics.containsPoint(new PIXI.Point(x + diff, y + diff)))
+                graphics.containsPoint(new PIXI.Point(x + diff, y + diff)) ||
+                graphics.containsPoint(new PIXI.Point(x - diff, y + diff)) ||
+                graphics.containsPoint(new PIXI.Point(x + diff, y - diff))
+            )
         ) {
             return
         }
