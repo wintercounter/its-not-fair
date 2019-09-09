@@ -5,14 +5,14 @@ import keyboard from './keyboard'
 import SpritePacMan from '@/assets/pacman.png'
 import './style.scss'
 
-const TOP = 'top'
+const UP = 'up'
 const RIGHT = 'right'
-const BOTTOM = 'bottom'
+const DOWN = 'down'
 const LEFT = 'left'
 
 let type = 'WebGL'
 let PacMan
-let Direction = RIGHT
+let CurrentDirection = RIGHT
 
 if (!PIXI.utils.isWebGLSupported()) {
     type = 'canvas'
@@ -34,13 +34,13 @@ app.renderer.backgroundColor = 0x061639
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view)
 
-const gameLoop = function() {
+const tryStep = function({_vx, _vy, _angle, _direction}) {
     const x = Math.min(
-        Math.max(PacMan.width / 2, PacMan.x + PacMan.vx),
+        Math.max(PacMan.width / 2, PacMan.x + _vx),
         app.screen.width - PacMan.width + PacMan.width / 2
     )
     const y = Math.min(
-        Math.max(PacMan.height / 2, PacMan.y + PacMan.vy),
+        Math.max(PacMan.height / 2, PacMan.y + _vy),
         app.screen.height - PacMan.height + PacMan.height / 2
     )
 
@@ -55,21 +55,59 @@ const gameLoop = function() {
 
         const diff = PacMan.width / 2 - 1
 
-        if (
-            !walkThrough &&
+        if (!walkThrough &&
             (graphics.containsPoint(new PIXI.Point(x - diff, y - diff)) ||
                 graphics.containsPoint(new PIXI.Point(x + diff, y + diff)) ||
                 graphics.containsPoint(new PIXI.Point(x - diff, y + diff)) ||
                 graphics.containsPoint(new PIXI.Point(x + diff, y - diff))
             )
         ) {
-            return
+            return false
         }
     }
-
+    PacMan.angle = _angle
     PacMan.x = x
     PacMan.y = y
-    //Direction = PacMan.direction
+    CurrentDirection = _direction
+    return true
+}
+
+const gameLoop = function() {
+    // Check buffered direction first
+    console.log(CurrentDirection, PacMan._direction)
+    if (PacMan._direction !== CurrentDirection && tryStep(DIRECTION_PROPS[PacMan._direction])) {
+
+    }
+    else {
+        tryStep(DIRECTION_PROPS[CurrentDirection])
+    }
+}
+
+const DIRECTION_PROPS = {
+    [UP]: {
+        _vx: 0,
+        _vy: -5,
+        _angle: 270,
+        _direction: UP
+    },
+    [RIGHT]: {
+        _vx: 5,
+        _vy: 0,
+        _angle: 0,
+        _direction: RIGHT
+    },
+    [DOWN]: {
+        _vx: 0,
+        _vy: 5,
+        _angle: 90,
+        _direction: DOWN
+    },
+    [LEFT]: {
+        _vx: -5,
+        _vy: 0,
+        _angle: 180,
+        _direction: LEFT
+    }
 }
 
 const setup = function(loader) {
@@ -80,8 +118,9 @@ const setup = function(loader) {
 
     app.stage.addChild(Map)
     app.stage.addChild(PacMan)
-    PacMan.vx = 0
-    PacMan.vy = 0
+    PacMan._vx = 0
+    PacMan._vy = 0
+    PacMan._direction = RIGHT
 
     PacMan.width = 30
     PacMan.height = 30
@@ -94,38 +133,11 @@ const setup = function(loader) {
         right = keyboard('ArrowRight'),
         down = keyboard('ArrowDown')
 
-    //Left arrow key `press` method
-    left.press = () => {
-        //Change the cat's velocity when the key is pressed
-        PacMan.vx = -5
-        PacMan.vy = 0
-        PacMan.angle = 180
-        //PacMan.direction = LEFT
-    }
 
-    //Up
-    up.press = () => {
-        PacMan.vy = -5
-        PacMan.vx = 0
-        PacMan.angle = 270
-        //PacMan.direction = TOP
-    }
-
-    //Right
-    right.press = () => {
-        PacMan.vx = 5
-        PacMan.vy = 0
-        PacMan.angle = 0
-        //PacMan.direction = RIGHT
-    }
-
-    //Down
-    down.press = () => {
-        PacMan.vy = 5
-        PacMan.vx = 0
-        PacMan.angle = 90
-        //PacMan.direction = BOTTOM
-    }
+    left.press = () => PacMan._direction = LEFT
+    up.press = () => PacMan._direction = UP
+    right.press = () => PacMan._direction = RIGHT
+    down.press = () => PacMan._direction = DOWN
 
     app.ticker.add(gameLoop)
 }
