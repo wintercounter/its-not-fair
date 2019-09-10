@@ -1,4 +1,4 @@
-const keyboard = function(value) {
+const keyboardEvents = function(value) {
     const key = {
         value,
         isDown: false,
@@ -40,4 +40,4 @@ const keyboard = function(value) {
     return key
 }
 
-export default keyboard
+export default keyboardEvents
