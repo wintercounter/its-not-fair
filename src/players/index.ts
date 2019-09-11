@@ -7,24 +7,24 @@ import { DOWN, LEFT, RIGHT, UP } from '@/constants/Directions'
 const DIRECTION_PROPS = {
     [UP]: {
         vx: 0,
-        vy: -2,
+        vy: -5,
         angle: 270,
         direction: UP
     },
     [RIGHT]: {
-        vx: 2,
+        vx: 5,
         vy: 0,
         angle: 0,
         direction: RIGHT
     },
     [DOWN]: {
         vx: 0,
-        vy: 2,
+        vy: 5,
         angle: 90,
         direction: DOWN
     },
     [LEFT]: {
-        vx: -2,
+        vx: -5,
         vy: 0,
         angle: 180,
         direction: LEFT
@@ -66,8 +66,8 @@ export default class Player implements IPlayer {
 
     public tryNext({ vx, vy, angle, direction }) {
         const { x, y, width, height } = this.container
-        const newX = Math.min(Math.max(width / 2, x + vx), this.app.screen.width - width + width / 2)
-        const newY = Math.min(Math.max(height / 2, y + vy), this.app.screen.height - height + height / 2)
+        const newX = x + vx
+        const newY = y + vy
 
         const cells = this.map.getNeighboursByCoords(x, y, width, height)
 
@@ -77,12 +77,9 @@ export default class Player implements IPlayer {
             if (
                 !cell.walkThrough &&
                 (cell.containsPoint(newX - diff, newY - diff) ||
-                    cell.containsPoint(
-                        newX + (diff + DIRECTION_PROPS[LEFT].vx),
-                        newY + (diff + DIRECTION_PROPS[UP].vy)
-                    ) ||
-                    cell.containsPoint(newX - diff, newY + (diff + DIRECTION_PROPS[UP].vy)) ||
-                    cell.containsPoint(newX + (diff + DIRECTION_PROPS[LEFT].vx), newY - diff))
+                    cell.containsPoint(newX + (diff - 0.01), newY + (diff - 0.01)) ||
+                    cell.containsPoint(newX - diff, newY + (diff - 0.01)) ||
+                    cell.containsPoint(newX + (diff - 0.01), newY - diff))
             ) {
                 this.state = this.direction === direction ? Player.STOPPED : Player.RUNNING
                 return false
