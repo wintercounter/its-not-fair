@@ -73,14 +73,16 @@ export default class Player implements IPlayer {
                 props: { walkThrough }
             } = cell
 
-            const diff = width / 2 - 1
+            const diff = width / 2
 
             if (
                 !walkThrough &&
                 (graphics.containsPoint(new PIXI.Point(newX - diff, newY - diff)) ||
-                    graphics.containsPoint(new PIXI.Point(newX + diff, newY + diff)) ||
-                    graphics.containsPoint(new PIXI.Point(newX - diff, newY + diff)) ||
-                    graphics.containsPoint(new PIXI.Point(newX + diff, newY - diff)))
+                    graphics.containsPoint(
+                        new PIXI.Point(newX + (diff + DIRECTION_PROPS[LEFT].vx), newY + (diff + DIRECTION_PROPS[UP].vy))
+                    ) ||
+                    graphics.containsPoint(new PIXI.Point(newX - diff, newY + (diff + DIRECTION_PROPS[UP].vy))) ||
+                    graphics.containsPoint(new PIXI.Point(newX + (diff + DIRECTION_PROPS[LEFT].vx), newY - diff)))
             ) {
                 this.state = this.direction === direction ? Player.STOPPED : Player.RUNNING
                 return false
