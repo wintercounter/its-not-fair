@@ -1,9 +1,9 @@
-import * as PIXI from 'pixi.js'
-
+import CellMap from '@/cells'
 import Map from '@/maps'
+import { CELL_SIZE } from '@/constants/Sizes'
 
 export default class One extends Map {
-    rows = [
+    public rows = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
@@ -36,23 +36,9 @@ export default class One extends Map {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ].map((cells, rowI) => {
         return cells.map((cell, cellI) => {
-            const graphics = new PIXI.Graphics()
-            const x = Map.CELL_SIZE * cellI
-            const y = Map.CELL_SIZE * rowI
-
-            graphics.beginFill(Map.CELL_PROPS[cell].fill)
-            graphics.drawRect(x, y, Map.CELL_SIZE, Map.CELL_SIZE)
-
-            this.container.addChild(graphics)
-
-            return {
-                id: cell,
-                graphics,
-                x,
-                y,
-                props: Map.CELL_PROPS[cell],
-                point: new PIXI.Point(x, y)
-            }
+            const x = CELL_SIZE * cellI
+            const y = CELL_SIZE * rowI
+            return new CellMap[cell]({ x, y, map: this })
         })
     })
 }

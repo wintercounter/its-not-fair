@@ -10,15 +10,18 @@ export default class Main {
     })
 
     private players
+
     private map
 
-    constructor({ players = [], map }) {
+    public constructor({ players = [], map }) {
         this.players = players
         this.map = map
 
         players.forEach(player => {
-            player.map = map
-            player.app = this.app
+            // @ts-ignore
+            player.map = map // eslint-disable-line
+            // @ts-ignore
+            player.app = this.app // eslint-disable-line
         })
 
         this.load()
@@ -44,5 +47,6 @@ export default class Main {
 
     private loop = () => {
         this.players.forEach(player => player.draw())
+        this.map.draw()
     }
 }

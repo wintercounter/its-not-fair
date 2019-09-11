@@ -36,31 +36,35 @@ interface IPlayer {
 }
 
 export default class Player implements IPlayer {
-    static RUNNING = 'running'
-    static STOPPED = 'stopped'
+    public static RUNNING = 'running'
 
-    container = new PIXI.Container()
+    public static STOPPED = 'stopped'
 
-    direction = RIGHT
-    nextDirection = RIGHT
-    state = Player.RUNNING
+    public container = new PIXI.Container()
 
-    app
-    map
+    public direction = RIGHT
 
-    get nextProps() {
+    public nextDirection = RIGHT
+
+    public state = Player.RUNNING
+
+    public app
+
+    public map
+
+    public get nextProps() {
         return DIRECTION_PROPS[this.nextDirection]
     }
 
-    get currentProps() {
+    public get currentProps() {
         return DIRECTION_PROPS[this.direction]
     }
 
-    constructor() {
+    public constructor() {
         this.bind()
     }
 
-    tryNext({ vx, vy, angle, direction }) {
+    public tryNext({ vx, vy, angle, direction }) {
         const { x, y, width, height } = this.container
         const newX = Math.min(Math.max(width / 2, x + vx), this.app.screen.width - width + width / 2)
         const newY = Math.min(Math.max(height / 2, y + vy), this.app.screen.height - height + height / 2)
@@ -68,21 +72,17 @@ export default class Player implements IPlayer {
         const cells = this.map.getNeighboursByCoords(x, y, width, height)
 
         for (const cell of cells) {
-            const {
-                graphics,
-                props: { walkThrough }
-            } = cell
-
             const diff = width / 2
 
             if (
-                !walkThrough &&
-                (graphics.containsPoint(new PIXI.Point(newX - diff, newY - diff)) ||
-                    graphics.containsPoint(
-                        new PIXI.Point(newX + (diff + DIRECTION_PROPS[LEFT].vx), newY + (diff + DIRECTION_PROPS[UP].vy))
+                !cell.walkThrough &&
+                (cell.containsPoint(newX - diff, newY - diff) ||
+                    cell.containsPoint(
+                        newX + (diff + DIRECTION_PROPS[LEFT].vx),
+                        newY + (diff + DIRECTION_PROPS[UP].vy)
                     ) ||
-                    graphics.containsPoint(new PIXI.Point(newX - diff, newY + (diff + DIRECTION_PROPS[UP].vy))) ||
-                    graphics.containsPoint(new PIXI.Point(newX + (diff + DIRECTION_PROPS[LEFT].vx), newY - diff)))
+                    cell.containsPoint(newX - diff, newY + (diff + DIRECTION_PROPS[UP].vy)) ||
+                    cell.containsPoint(newX + (diff + DIRECTION_PROPS[LEFT].vx), newY - diff))
             ) {
                 this.state = this.direction === direction ? Player.STOPPED : Player.RUNNING
                 return false
@@ -98,7 +98,10 @@ export default class Player implements IPlayer {
         return true
     }
 
-    bind() {
+    // eslint-disable-next-line
+    public draw() {}
+
+    private bind() {
         //Capture the keyboard arrow keys
         const left = keyboard('ArrowLeft'),
             up = keyboard('ArrowUp'),

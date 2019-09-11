@@ -2,16 +2,18 @@ import * as PIXI from 'pixi.js'
 import Player from '@/Players'
 
 export default class PacMan extends Player {
-    PacMan1
-    PacMan2
-    customLoopTimer = 0
+    private PacMan1
 
-    constructor() {
+    private PacMan2
+
+    private customLoopTimer = 0
+
+    public constructor() {
         super()
         this.setup()
     }
 
-    setup() {
+    private setup() {
         const base = new PIXI.Graphics()
         base.alpha = 0
         base.beginFill(0xff99ff)
@@ -48,7 +50,7 @@ export default class PacMan extends Player {
         this.container.addChild(PacMan2)
     }
 
-    draw() {
+    public draw() {
         if (this.state === Player.RUNNING && this.customLoopTimer++ > 4) {
             this.PacMan2.visible = !this.PacMan2.visible
             this.customLoopTimer = 0
@@ -56,6 +58,7 @@ export default class PacMan extends Player {
 
         // Check buffered direction first
         if (this.nextDirection !== this.direction && this.tryNext(this.nextProps)) {
+            // eslint-disable-line
         } else {
             this.tryNext(this.currentProps)
         }
