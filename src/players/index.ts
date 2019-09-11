@@ -7,24 +7,24 @@ import { DOWN, LEFT, RIGHT, UP } from '@/constants/Directions'
 const DIRECTION_PROPS = {
     [UP]: {
         vx: 0,
-        vy: -1,
+        vy: -2,
         angle: 270,
         direction: UP
     },
     [RIGHT]: {
-        vx: 1,
+        vx: 2,
         vy: 0,
         angle: 0,
         direction: RIGHT
     },
     [DOWN]: {
         vx: 0,
-        vy: 1,
+        vy: 2,
         angle: 90,
         direction: DOWN
     },
     [LEFT]: {
-        vx: -1,
+        vx: -2,
         vy: 0,
         angle: 180,
         direction: LEFT
