@@ -3,9 +3,16 @@ import Main from '@/Main'
 import PacMan from '@/players/PacMan'
 import One from '@/Maps/One'
 
+const map = new One()
+const players = [
+    new PacMan({
+        map
+    })
+]
+
 // eslint-disable-next-line
 new Main({
-    map: new One(),
+    map,
     // @ts-ignore
-    players: [new PacMan()]
+    players
 })
