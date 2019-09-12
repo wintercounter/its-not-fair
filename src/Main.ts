@@ -1,4 +1,7 @@
 import * as PIXI from 'pixi.js'
+import monster from 'file-loader!@/assets/monster/monster.sprite' // eslint-disable-line
+
+console.log(monster)
 
 export default class Main {
     private app = new PIXI.Application({
@@ -30,6 +33,7 @@ export default class Main {
     private load() {
         this.app.loader
             //.add(SpritePacMan)
+            .add(monster)
             .load(this.setup)
     }
 
