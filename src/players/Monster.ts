@@ -16,8 +16,12 @@ export default class Monster extends Player {
         base.endFill()
         base.x = -15
         base.y = -15
+        console.log(this)
+        const sheet = this.app.loader.resources['monster.json'].spritesheet
 
-        // create an array of textures from an image path
+        console.log(sheet)
+
+        /* // create an array of textures from an image path
         const frames = []
 
         for (let i = 0; i < 19; i++) {
@@ -30,10 +34,6 @@ export default class Monster extends Player {
         // create an AnimatedSprite (brings back memories from the days of Flash, right ?)
         const anim = new PIXI.AnimatedSprite(frames)
 
-        /*
-         * An AnimatedSprite inherits all the properties of a PIXI sprite
-         * so you can change its position, its anchor, mask it, etc
-         */
         anim.x = 0
         anim.y = 0
         anim.anchor.set(0.5)
@@ -41,7 +41,8 @@ export default class Monster extends Player {
         anim.play()
 
         this.container.addChild(base)
-        this.container.addChild(anim)
+        this.container.addChild(anim)*/
+        this.container.addChild(base)
     }
 
     public draw() {
