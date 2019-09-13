@@ -3,6 +3,8 @@ import Hammer from 'hammerjs'
 
 import keyboard from '@/utils/keyboardEvents'
 import { DOWN, LEFT, RIGHT, UP } from '@/constants/Directions'
+import SpawnPoint from '@/cells/SpawnPoint'
+import { CELL_SIZE } from '@/constants/Sizes'
 
 const DIRECTION_PROPS = {
     [UP]: {
@@ -60,8 +62,20 @@ export default class Player implements IPlayer {
         return DIRECTION_PROPS[this.direction]
     }
 
-    public constructor() {
+    public constructor({ map }) {
+        this.map = map
         this.bind()
+    }
+
+    public getSpawnPosition() {
+        const cells = this.map.getCellsByType(SpawnPoint).filter(({ isOccupied }) => !isOccupied)
+        const cell = cells[Math.floor(Math.random() * cells.length)]
+        cell.hasPlayer()
+        return {
+            x: cell.x + CELL_SIZE / 2,
+            y: cell.y + CELL_SIZE / 2,
+            defaultDirection: cell.defaultDirection
+        }
     }
 
     public tryNext({ vx, vy, angle, direction }) {

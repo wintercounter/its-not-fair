@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { CELL_SIZE } from '@/constants/Sizes'
+import Cell from '@/cells/Cell'
 
 interface IMap {
     container: PIXI.Container
@@ -11,7 +12,27 @@ export default class Map implements IMap {
 
     public rows
 
-    public draw() {} // eslint-disable-line
+    public draw() {
+        this.eachCell(cell => cell.draw && cell.draw())
+    }
+
+    public eachCell(cb) {
+        for (const row of this.rows) {
+            for (const cell of row) {
+                cb(cell)
+            }
+        }
+    }
+
+    public getCellsByType(proto): Cell[] {
+        const results: Cell[] = []
+        this.eachCell(cell => {
+            if (cell instanceof proto) {
+                results.push(cell)
+            }
+        })
+        return results
+    }
 
     public getNeighboursByCoords(x, y, width, height) {
         const x1 = Math.max(0, Math.floor((y - width / 2) / CELL_SIZE) - 1)
