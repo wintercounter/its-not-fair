@@ -62,8 +62,9 @@ export default class Player implements IPlayer {
         return DIRECTION_PROPS[this.direction]
     }
 
-    public constructor({ map }) {
+    public constructor({ map, app }) {
         this.map = map
+        this.app = app
         this.bind()
     }
 

@@ -5,6 +5,8 @@ import { CELL_SIZE } from '@/constants/Sizes'
 export default class Monster extends Player {
     private base
 
+    private anim
+
     private customLoopTimer = 0
 
     public constructor(args) {
@@ -12,7 +14,16 @@ export default class Monster extends Player {
         this.setup()
     }
 
-    public setupMonster() {}
+    public setupMonster() {
+        const sheet = this.app.loader.resources['monster'].spritesheet
+        const anim = (this.anim = new PIXI.AnimatedSprite(sheet.animations['Walk']))
+        anim.x = 0
+        anim.y = 0
+        anim.anchor.set(0.5)
+        anim.animationSpeed = 1
+        anim.scale.set(0.125)
+        anim.play()
+    }
 
     public setupBase() {
         const base = (this.base = new PIXI.Graphics())
@@ -36,6 +47,7 @@ export default class Monster extends Player {
         this.container.height = CELL_SIZE
 
         this.container.addChild(this.base)
+        this.container.addChild(this.anim)
     }
 
     public draw() {
