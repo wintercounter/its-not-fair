@@ -2,8 +2,8 @@ import * as PIXI from 'pixi.js'
 
 export default class Main {
     private app = new PIXI.Application({
-        width: 900,
-        height: 900,
+        width: 960,
+        height: 960,
         antialias: true,
         transparent: false,
         resolution: 1
@@ -13,25 +13,27 @@ export default class Main {
 
     private map
 
-    public constructor({ players = [], map }) {
-        this.players = players
-        this.map = map
+    private getPlayers
 
-        players.forEach(player => {
-            // @ts-ignore
-            player.app = this.app // eslint-disable-line
-        })
+    private getMap
+
+    public constructor({ getMap, getPlayers }) {
+        this.getPlayers = getPlayers
+        this.getMap = getMap
 
         this.load()
     }
 
-    private load() {
+    public load() {
         this.app.loader
             //.add(SpritePacMan)
+            .add('monster', 'monster.json')
             .load(this.setup)
     }
 
     private setup = () => {
+        this.map = this.getMap(this.app)
+        this.players = this.getPlayers(this.app, this.map)
         this.app.renderer.backgroundColor = 0x000000
         this.app.stage.addChild(this.map.container)
         this.players.forEach(({ container }) => this.app.stage.addChild(container))

@@ -9,24 +9,24 @@ import { CELL_SIZE } from '@/constants/Sizes'
 const DIRECTION_PROPS = {
     [UP]: {
         vx: 0,
-        vy: -5,
+        vy: -4,
         angle: 270,
         direction: UP
     },
     [RIGHT]: {
-        vx: 5,
+        vx: 4,
         vy: 0,
         angle: 0,
         direction: RIGHT
     },
     [DOWN]: {
         vx: 0,
-        vy: 5,
+        vy: 4,
         angle: 90,
         direction: DOWN
     },
     [LEFT]: {
-        vx: -5,
+        vx: -4,
         vy: 0,
         angle: 180,
         direction: LEFT
@@ -50,9 +50,13 @@ export default class Player implements IPlayer {
 
     public state = Player.RUNNING
 
+    public previousState = Player.RUNNING
+
     public app
 
     public map
+
+    public base
 
     public get nextProps() {
         return DIRECTION_PROPS[this.nextDirection]
@@ -62,8 +66,19 @@ export default class Player implements IPlayer {
         return DIRECTION_PROPS[this.direction]
     }
 
-    public constructor({ map }) {
+    public setupBase() {
+        const base = (this.base = new PIXI.Graphics())
+        base.alpha = 0
+        base.beginFill(0xff99ff)
+        base.drawRect(0, 0, CELL_SIZE, CELL_SIZE)
+        base.endFill()
+        base.x = CELL_SIZE / -2
+        base.y = CELL_SIZE / -2
+    }
+
+    public constructor({ map, app }) {
         this.map = map
+        this.app = app
         this.bind()
     }
 
@@ -79,7 +94,9 @@ export default class Player implements IPlayer {
     }
 
     public tryNext({ vx, vy, angle, direction }) {
-        const { x, y, width, height } = this.container
+        const { x, y } = this.container
+        const width = CELL_SIZE
+        const height = CELL_SIZE
         const newX = x + vx
         const newY = y + vy
 
@@ -91,17 +108,18 @@ export default class Player implements IPlayer {
             if (
                 !cell.walkThrough &&
                 (cell.containsPoint(newX - diff, newY - diff) ||
-                    cell.containsPoint(newX + (diff - 0.01), newY + (diff - 0.01)) ||
-                    cell.containsPoint(newX - diff, newY + (diff - 0.01)) ||
-                    cell.containsPoint(newX + (diff - 0.01), newY - diff))
+                    cell.containsPoint(newX + (diff - 4), newY + (diff - 4)) ||
+                    cell.containsPoint(newX - diff, newY + (diff - 4)) ||
+                    cell.containsPoint(newX + (diff - 4), newY - diff))
             ) {
+                this.previousState = this.state
                 this.state = this.direction === direction ? Player.STOPPED : Player.RUNNING
                 return false
             }
         }
 
         this.state = Player.RUNNING
-        this.container.angle = angle
+        //this.container.angle = angle
         this.container.x = newX
         this.container.y = newY
         this.direction = direction
