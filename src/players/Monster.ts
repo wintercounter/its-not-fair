@@ -16,8 +16,9 @@ export default class Monster extends Player {
     }
 
     private setupAnimationDirection() {
+        const lastScaleX = this.animations.walk.scale.x
         const scaleX =
-            this.nextDirection === RIGHT ? -ANIM_SCALE : this.nextDirection === LEFT ? ANIM_SCALE : -ANIM_SCALE
+            this.nextDirection === RIGHT ? -ANIM_SCALE : this.nextDirection === LEFT ? ANIM_SCALE : lastScaleX
         Object.values(this.animations).forEach(anim => {
             anim.scale.set(scaleX, ANIM_SCALE)
         })
