@@ -19,8 +19,6 @@ export default class Main {
 
         players.forEach(player => {
             // @ts-ignore
-            player.map = map // eslint-disable-line
-            // @ts-ignore
             player.app = this.app // eslint-disable-line
         })
 

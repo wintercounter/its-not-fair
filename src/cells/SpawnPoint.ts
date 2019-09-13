@@ -1,20 +1,18 @@
-import * as PIXI from 'pixi.js'
-import Cell from './Cell'
 import { CELL_SIZE } from '@/constants/Sizes'
+import SimpleSpace from '@/cells/SimpleSpace'
 
-export default class SpawnPoint extends Cell {
-    public graphics = new PIXI.Graphics()
+export default class SpawnPoint extends SimpleSpace {
+    public isOccupied = false
 
-    public constructor(args) {
-        super(args)
-        this.setup()
+    public hasPlayer(): void {
+        this.isOccupied = true
+        this.update()
     }
 
-    private setup() {
-        this.graphics.beginFill(0xcd9fcc)
+    public update(): void {
+        this.graphics.clear()
+        this.graphics.beginFill(0xffffff)
         this.graphics.drawRect(this.x, this.y, CELL_SIZE, CELL_SIZE)
         this.graphics.endFill()
-
-        this.map.container.addChild(this.graphics)
     }
 }
