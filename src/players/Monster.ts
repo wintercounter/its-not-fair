@@ -1,38 +1,62 @@
 import * as PIXI from 'pixi.js'
 import Player from '@/Players'
 import { CELL_SIZE } from '@/constants/Sizes'
+import { LEFT, RIGHT } from '@/constants/Directions'
+
+const ANIM_SCALE = 0.8
 
 export default class Monster extends Player {
     private base
 
-    private anim
-
-    private customLoopTimer = 0
+    private animations
 
     public constructor(args) {
         super(args)
         this.setup()
     }
 
-    public setupMonster() {
-        const sheet = this.app.loader.resources['monster'].spritesheet
-        const anim = (this.anim = new PIXI.AnimatedSprite(sheet.animations['Walk']))
-        anim.x = 0
-        anim.y = 0
-        anim.anchor.set(0.5)
-        anim.animationSpeed = 1
-        anim.scale.set(0.125)
-        anim.play()
+    private setupAnimationDirection() {
+        const scaleX =
+            this.nextDirection === RIGHT ? -ANIM_SCALE : this.nextDirection === LEFT ? ANIM_SCALE : -ANIM_SCALE
+        Object.values(this.animations).forEach(anim => {
+            anim.scale.set(scaleX, ANIM_SCALE)
+        })
     }
 
-    public setupBase() {
-        const base = (this.base = new PIXI.Graphics())
-        base.alpha = 0
-        base.beginFill(0xff99ff)
-        base.drawRect(0, 0, CELL_SIZE, CELL_SIZE)
-        base.endFill()
-        base.x = CELL_SIZE / -2
-        base.y = CELL_SIZE / -2
+    private setAnimation() {
+        switch (this.state) {
+            default:
+            case Monster.RUNNING:
+                this.animations.idle.visible = false
+                this.animations.walk.visible = true
+                break
+            case Monster.STOPPED:
+                this.animations.idle.visible = true
+                this.animations.walk.visible = false
+                break
+        }
+    }
+
+    public setupMonster() {
+        const sheet = this.app.loader.resources.monster.spritesheet
+        const animations = (this.animations = {
+            walk: new PIXI.AnimatedSprite(sheet.animations.Walk),
+            idle: new PIXI.AnimatedSprite(sheet.animations.Idle)
+        })
+        this.setAnimation()
+        this.setupAnimationDirection()
+        Object.values(animations).forEach(anim => {
+            // eslint-disable-next-line no-param-reassign
+            anim.x = 0
+            // eslint-disable-next-line no-param-reassign
+            anim.y = CELL_SIZE / 2
+            // eslint-disable-next-line no-param-reassign
+            anim.anchor.set(0.5, 1)
+            // eslint-disable-next-line no-param-reassign
+            anim.play()
+        })
+        animations.walk.animationSpeed = 1
+        animations.idle.animationSpeed = 0.3
     }
 
     private setup() {
@@ -47,13 +71,17 @@ export default class Monster extends Player {
         this.container.height = CELL_SIZE
 
         this.container.addChild(this.base)
-        this.container.addChild(this.anim)
+        this.container.addChild(this.animations.idle)
+        this.container.addChild(this.animations.walk)
     }
 
     public draw() {
+        if (this.previousState !== this.state) {
+            this.setAnimation()
+        }
         // Check buffered direction first
         if (this.nextDirection !== this.direction && this.tryNext(this.nextProps)) {
-            // eslint-disable-line
+            this.setupAnimationDirection()
         } else {
             this.tryNext(this.currentProps)
         }
