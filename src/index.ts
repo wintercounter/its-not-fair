@@ -11,6 +11,11 @@ new Main({
         return new One()
     },
     getPlayers(app, map) {
-        return [new PacMan({ app, map, control: true }), new Monster({ app, map, mixins: [PlayerRandom] })]
+        return [
+            new PacMan({ app, map, control: true }),
+            new Monster({ app, map, mixins: [PlayerRandom] }),
+            new Monster({ app, map, mixins: [PlayerRandom] }),
+            new Monster({ app, map, mixins: [PlayerRandom] })
+        ]
     }
 })
