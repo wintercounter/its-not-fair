@@ -137,7 +137,7 @@ export default class Player implements IPlayer {
         return cell.walkThrough
     }
 
-    public tryNext({ angle, direction }) {
+    public tryNext({ direction }) {
         const { x, y } = this.container
         const width = CELL_SIZE
         const height = CELL_SIZE
