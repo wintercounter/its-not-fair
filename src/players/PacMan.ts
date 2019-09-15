@@ -68,7 +68,7 @@ export default class PacMan extends Player {
         if (this.nextDirection !== this.direction && this.tryNext(this.nextProps)) {
             // eslint-disable-line
         } else {
-            this.tryNext(this.currentProps)
+            this.tryNext(this.currentProps) && (this.container.angle = this.currentProps.angle)
         }
         this.afterDraw()
     }

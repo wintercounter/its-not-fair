@@ -37,7 +37,6 @@ export default class Map implements IMap {
     public getCellByCoords(x, y) {
         const x1 = Math.floor(y / CELL_SIZE)
         const y1 = Math.floor(x / CELL_SIZE)
-        //console.log('getCellByCoords', x1, y1, this.rows[x1][y1])
         return this.rows[x1][y1]
     }
 

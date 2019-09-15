@@ -163,7 +163,6 @@ export default class Player implements IPlayer {
         }
 
         this.state = Player.RUNNING
-        this.container.angle = angle
         this.container.x = newX
         this.container.y = newY
         this.direction = direction
