@@ -8,26 +8,18 @@ import { CELL_SIZE } from '@/constants/Sizes'
 
 const DIRECTION_PROPS = {
     [UP]: {
-        vx: 0,
-        vy: -4,
         angle: 270,
         direction: UP
     },
     [RIGHT]: {
-        vx: 4,
-        vy: 0,
         angle: 0,
         direction: RIGHT
     },
     [DOWN]: {
-        vx: 0,
-        vy: 4,
         angle: 90,
         direction: DOWN
     },
     [LEFT]: {
-        vx: -4,
-        vy: 0,
         angle: 180,
         direction: LEFT
     }
@@ -58,12 +50,31 @@ export default class Player implements IPlayer {
 
     public base
 
+    public mixins
+
+    public control
+
+    public velocity = 4
+
+    // eslint-disable-next-line
+    public get diff() {
+        return CELL_SIZE / 2
+    }
+
     public get nextProps() {
         return DIRECTION_PROPS[this.nextDirection]
     }
 
     public get currentProps() {
         return DIRECTION_PROPS[this.direction]
+    }
+
+    private vx(dir) {
+        return dir === LEFT ? this.velocity * -1 : dir === RIGHT ? this.velocity : 0
+    }
+
+    private vy(dir) {
+        return dir === UP ? this.velocity * -1 : dir === DOWN ? this.velocity : 0
     }
 
     public setupBase() {
@@ -76,10 +87,35 @@ export default class Player implements IPlayer {
         base.y = CELL_SIZE / -2
     }
 
-    public constructor({ map, app }) {
+    public constructor({ map, app, mixins = [], control = false }) {
         this.map = map
         this.app = app
+        this.control = control
+        // @ts-ignore
+        this.mixins = mixins.map(mixin => new mixin(this))
         this.bind()
+    }
+
+    public velocityByDirection(dir, additive = 0) {
+        if (dir === DOWN || dir === RIGHT) {
+            return this.velocity + additive
+        }
+        return this.velocity + additive * -1
+    }
+
+    // eslint-disable-next-line
+    public newCoordsByDirection(dir, x, y): number[] {
+        switch (dir) {
+            case UP:
+                return [x, y - CELL_SIZE]
+            case DOWN:
+                return [x, y + CELL_SIZE]
+            case RIGHT:
+                return [x + CELL_SIZE, y]
+            case LEFT:
+                return [x - CELL_SIZE, y]
+        }
+        return [0, 0]
     }
 
     public getSpawnPosition() {
@@ -93,12 +129,20 @@ export default class Player implements IPlayer {
         }
     }
 
-    public tryNext({ vx, vy, angle, direction }) {
+    public canGo(direction) {
+        const { x, y } = this.container
+        const [newX, newY] = this.newCoordsByDirection(direction, x, y)
+        const cell = this.map.getCellByCoords(newX, newY)
+
+        return cell.walkThrough
+    }
+
+    public tryNext({ angle, direction }) {
         const { x, y } = this.container
         const width = CELL_SIZE
         const height = CELL_SIZE
-        const newX = x + vx
-        const newY = y + vy
+        const newX = x + this.vx(direction)
+        const newY = y + this.vy(direction)
 
         const cells = this.map.getNeighboursByCoords(x, y, width, height)
 
@@ -119,7 +163,7 @@ export default class Player implements IPlayer {
         }
 
         this.state = Player.RUNNING
-        //this.container.angle = angle
+        this.container.angle = angle
         this.container.x = newX
         this.container.y = newY
         this.direction = direction
@@ -127,10 +171,54 @@ export default class Player implements IPlayer {
         return true
     }
 
+    public beforeDraw() {
+        for (const mixin of this.mixins) {
+            if (mixin.beforeDraw && !mixin.beforeDraw()) {
+                return false
+            }
+        }
+        return true
+    }
+
+    public afterDraw() {
+        for (const mixin of this.mixins) {
+            if (mixin.afterDraw && !mixin.afterDraw()) {
+                return false
+            }
+        }
+        return true
+    }
+
+    public beforeSetup() {
+        for (const mixin of this.mixins) {
+            if (mixin.beforeSetup && !mixin.beforeSetup()) {
+                return false
+            }
+        }
+        return true
+    }
+
+    public afterSetup() {
+        for (const mixin of this.mixins) {
+            if (mixin.afterSetup && !mixin.afterSetup()) {
+                return false
+            }
+        }
+        return true
+    }
+
     // eslint-disable-next-line
-    public draw() {}
+    public draw() {
+        if (!this.beforeDraw()) {
+            return
+        }
+        this.afterDraw()
+    }
 
     private bind() {
+        if (!this.control) {
+            return
+        }
         //Capture the keyboard arrow keys
         const left = keyboard('ArrowLeft'),
             up = keyboard('ArrowUp'),

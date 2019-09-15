@@ -34,6 +34,13 @@ export default class Map implements IMap {
         return results
     }
 
+    public getCellByCoords(x, y) {
+        const x1 = Math.floor(y / CELL_SIZE)
+        const y1 = Math.floor(x / CELL_SIZE)
+        //console.log('getCellByCoords', x1, y1, this.rows[x1][y1])
+        return this.rows[x1][y1]
+    }
+
     public getNeighboursByCoords(x, y, width, height) {
         const x1 = Math.max(0, Math.floor((y - width / 2) / CELL_SIZE) - 1)
         const x2 = Math.min(Math.floor((y + width / 2) / CELL_SIZE), this.rows.length - 1)

@@ -1,10 +1,8 @@
 import * as PIXI from 'pixi.js'
-import Player from '@/Players'
+import Player from '@/players'
 import { CELL_SIZE } from '@/constants/Sizes'
 
 export default class PacMan extends Player {
-    private base
-
     private PacMan1
 
     private PacMan2
@@ -13,7 +11,9 @@ export default class PacMan extends Player {
 
     public constructor(args) {
         super(args)
+        this.beforeSetup()
         this.setup()
+        this.afterSetup()
     }
 
     public setupPacMan1() {
@@ -38,16 +38,6 @@ export default class PacMan extends Player {
         PacMan2.scale = new PIXI.Point(0.25, 0.25)
     }
 
-    public setupBase() {
-        const base = (this.base = new PIXI.Graphics())
-        base.alpha = 0
-        base.beginFill(0xff99ff)
-        base.drawRect(0, 0, CELL_SIZE, CELL_SIZE)
-        base.endFill()
-        base.x = CELL_SIZE / -2
-        base.y = CELL_SIZE / -2
-    }
-
     private setup() {
         const { x, y, defaultDirection } = this.getSpawnPosition()
         this.direction = this.nextDirection = defaultDirection
@@ -66,6 +56,9 @@ export default class PacMan extends Player {
     }
 
     public draw() {
+        if (!this.beforeDraw()) {
+            return
+        }
         if (this.state === Player.RUNNING && this.customLoopTimer++ > 4) {
             this.PacMan2.visible = !this.PacMan2.visible
             this.customLoopTimer = 0
@@ -77,5 +70,6 @@ export default class PacMan extends Player {
         } else {
             this.tryNext(this.currentProps)
         }
+        this.afterDraw()
     }
 }

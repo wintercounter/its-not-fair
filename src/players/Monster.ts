@@ -1,18 +1,18 @@
 import * as PIXI from 'pixi.js'
-import Player from '@/Players'
+import Player from '@/players'
 import { CELL_SIZE } from '@/constants/Sizes'
 import { LEFT, RIGHT } from '@/constants/Directions'
 
 const ANIM_SCALE = 0.8
 
 export default class Monster extends Player {
-    private base
-
     private animations
 
     public constructor(args) {
         super(args)
+        this.beforeSetup()
         this.setup()
+        this.afterSetup()
     }
 
     private setupAnimationDirection() {
@@ -20,6 +20,7 @@ export default class Monster extends Player {
         const scaleX =
             this.nextDirection === RIGHT ? -ANIM_SCALE : this.nextDirection === LEFT ? ANIM_SCALE : lastScaleX
         Object.values(this.animations).forEach(anim => {
+            // @ts-ignore
             anim.scale.set(scaleX, ANIM_SCALE)
         })
     }
@@ -77,6 +78,9 @@ export default class Monster extends Player {
     }
 
     public draw() {
+        if (!this.beforeDraw()) {
+            return
+        }
         if (this.previousState !== this.state) {
             this.setAnimation()
         }
@@ -86,5 +90,6 @@ export default class Monster extends Player {
         } else {
             this.tryNext(this.currentProps)
         }
+        this.afterDraw()
     }
 }
