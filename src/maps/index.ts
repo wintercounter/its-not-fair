@@ -1,16 +1,25 @@
 import * as PIXI from 'pixi.js'
 import { CELL_SIZE } from '@/constants/Sizes'
+import CellMap from '@/cells'
 import Cell from '@/cells/Cell'
 
 interface IMap {
-    container: PIXI.Container
+    baseLayer: PIXI.Container
+    graphicsLayer: PIXI.Container
+    animationLayer: PIXI.Container
     rows: []
 }
 
 export default class Map implements IMap {
-    public container = new PIXI.Container()
+    public baseLayer = new PIXI.Container()
+
+    public graphicsLayer = new PIXI.Container()
+
+    public animationLayer = new PIXI.Container()
 
     public rows
+
+    public matrix
 
     public draw() {
         this.eachCell(cell => cell.draw && cell.draw())
@@ -38,6 +47,22 @@ export default class Map implements IMap {
         const x1 = Math.floor(y / CELL_SIZE)
         const y1 = Math.floor(x / CELL_SIZE)
         return this.rows[x1][y1]
+    }
+
+    public getNeighboursFromMatrix(row, col) {
+        const m = this.matrix
+        const returnObj = {
+            top: undefined,
+            right: undefined,
+            bottom: undefined,
+            left: undefined
+        }
+
+        if (m[row - 1] && m[row - 1][col]) returnObj.top = CellMap[m[row - 1][col]]
+        if (m[row][col + 1]) returnObj.right = CellMap[m[row][col + 1]]
+        if (m[row + 1] && m[row + 1][col]) returnObj.bottom = CellMap[m[row + 1][col]]
+        if (m[row][col - 1]) returnObj.left = CellMap[m[row][col - 1]]
+        return returnObj
     }
 
     public getNeighboursByCoords(x, y, width, height) {

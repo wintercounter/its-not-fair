@@ -33,6 +33,7 @@
   "homepage": "https://github.com/wintercounter/its-not-fair#readme",
   "dependencies": {
     "hammerjs": "^2.0.8",
+    "pixi-filters": "^3.0.3",
     "pixi.js": "^5.1.2"
   },
   "devDependencies": {

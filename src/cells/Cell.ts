@@ -7,10 +7,16 @@ export default class Cell {
 
     public y
 
-    public constructor({ map, x, y }) {
+    public row
+
+    public cell
+
+    public constructor({ map, x, y, row, cell }) {
         this.map = map
         this.x = x
         this.y = y
+        this.row = row
+        this.cell = cell
     }
 
     // eslint-disable-next-line
