@@ -1,42 +1,49 @@
 {
-  "name": "its-not-fair",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "mhy",
-    "build": "mhy wp --mhy-prod",
-    "config": "mhy config typescript -io && mhy config eslint webpack prettier -io"
-  },
-  "author": "",
-  "license": "ISC",
-  "mhy": {
+    "name": "its-not-fair",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "mhy",
+        "build": "mhy wp --mhy-prod",
+        "config": "mhy config typescript -io && mhy config eslint webpack prettier -io"
+    },
+    "author": "",
+    "license": "ISC",
     "mhy": {
-      "root": {
-        "ecosystem": {
-          "$replace": [
-            "webpack-dev-server",
-            "jest"
-          ]
+        "mhy": {
+            "root": {
+                "ecosystem": {
+                    "$replace": [
+                        "webpack-dev-server",
+                        "jest"
+                    ]
+                }
+            }
+        },
+        "eslint": {
+            "root": {
+                "rules": {
+                    "no-param-reassign": 0
+                }
+            }
         }
-      }
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wintercounter/its-not-fair.git"
+    },
+    "bugs": {
+        "url": "https://github.com/wintercounter/its-not-fair/issues"
+    },
+    "homepage": "https://github.com/wintercounter/its-not-fair#readme",
+    "dependencies": {
+        "hammerjs": "^2.0.8",
+        "pixi-filters": "^3.0.3",
+        "pixi.js": "^5.1.2"
+    },
+    "devDependencies": {
+        "copy-webpack-plugin": "^5.0.4"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wintercounter/its-not-fair.git"
-  },
-  "bugs": {
-    "url": "https://github.com/wintercounter/its-not-fair/issues"
-  },
-  "homepage": "https://github.com/wintercounter/its-not-fair#readme",
-  "dependencies": {
-    "hammerjs": "^2.0.8",
-    "pixi-filters": "^3.0.3",
-    "pixi.js": "^5.1.2"
-  },
-  "devDependencies": {
-    "copy-webpack-plugin": "^5.0.4"
-  }
 }
