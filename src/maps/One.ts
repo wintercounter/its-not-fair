@@ -1,7 +1,4 @@
-import { AsciiFilter } from 'pixi-filters'
-import CellMap from '@/cells'
 import Map from '@/maps'
-import { CELL_SIZE } from '@/constants/Sizes'
 
 const WALL_COLORS = [[0x0099ff, 0x003d66]]
 
@@ -33,16 +30,10 @@ export default class One extends Map {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ]
 
-    public rows = this.matrix.map((cells, rowI) => {
-        return cells.map((cell, cellI) => {
-            const x = CELL_SIZE * cellI
-            const y = CELL_SIZE * rowI
-            return new CellMap[cell]({ x, y, row: rowI, cell: cellI, map: this, wallColors: this.wallColors })
-        })
-    })
-
     public constructor() {
         super()
+
+        this.renderRows()
 
         //this.graphicsLayer.cacheAsBitmap = true
         this.baseLayer.cacheAsBitmap = true
