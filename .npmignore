@@ -1,5 +1,6 @@
 .circleci
 /docker
+/src
 /build
 /docs
 book.json
