@@ -2,8 +2,8 @@ import * as PIXI from 'pixi.js'
 
 export default class Main {
     private app = new PIXI.Application({
-        width: 960,
-        height: 960,
+        width: 704,
+        height: 704,
         antialias: true,
         transparent: false,
         resolution: 1
