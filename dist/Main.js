@@ -7,8 +7,8 @@ export default class Main {
     getPlayers
   }) {
     _defineProperty(this, "app", new PIXI.Application({
-      width: 960,
-      height: 960,
+      width: 704,
+      height: 704,
       antialias: true,
       transparent: false,
       resolution: 1
@@ -26,7 +26,9 @@ export default class Main {
       this.map = this.getMap(this.app);
       this.players = this.getPlayers(this.app, this.map);
       this.app.renderer.backgroundColor = 0x000000;
-      this.app.stage.addChild(this.map.container);
+      this.app.stage.addChild(this.map.baseLayer);
+      this.app.stage.addChild(this.map.graphicsLayer);
+      this.app.stage.addChild(this.map.animationLayer);
       this.players.forEach(({
         container
       }) => this.app.stage.addChild(container));

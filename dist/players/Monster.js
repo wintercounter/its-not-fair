@@ -49,13 +49,10 @@ export default class Monster extends Player {
     this.setAnimation();
     this.setupAnimationDirection();
     Object.values(animations).forEach(anim => {
-      // eslint-disable-next-line no-param-reassign
-      anim.x = 0; // eslint-disable-next-line no-param-reassign
+      anim.x = 0;
+      anim.y = CELL_SIZE / 2 + 4; // some extra cuz of scaling
 
-      anim.y = CELL_SIZE / 2; // eslint-disable-next-line no-param-reassign
-
-      anim.anchor.set(0.5, 1); // eslint-disable-next-line no-param-reassign
-
+      anim.anchor.set(0.5, 1);
       anim.play();
     });
     animations.walk.animationSpeed = 1;

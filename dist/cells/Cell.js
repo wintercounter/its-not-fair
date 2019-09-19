@@ -4,7 +4,9 @@ export default class Cell {
   constructor({
     map,
     x,
-    y
+    y,
+    row,
+    cell
   }) {
     _defineProperty(this, "walkThrough", false);
 
@@ -14,9 +16,15 @@ export default class Cell {
 
     _defineProperty(this, "y", void 0);
 
+    _defineProperty(this, "row", void 0);
+
+    _defineProperty(this, "cell", void 0);
+
     this.map = map;
     this.x = x;
     this.y = y;
+    this.row = row;
+    this.cell = cell;
   } // eslint-disable-next-line
 
 

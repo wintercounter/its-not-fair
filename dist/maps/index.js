@@ -2,11 +2,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 import * as PIXI from 'pixi.js';
 import { CELL_SIZE } from "../constants/Sizes";
+import CellMap from "../cells";
 export default class Map {
   constructor() {
-    _defineProperty(this, "container", new PIXI.Container());
+    _defineProperty(this, "baseLayer", new PIXI.Container());
+
+    _defineProperty(this, "graphicsLayer", new PIXI.Container());
+
+    _defineProperty(this, "animationLayer", new PIXI.Container());
 
     _defineProperty(this, "rows", void 0);
+
+    _defineProperty(this, "matrix", void 0);
   }
 
   draw() {
@@ -35,6 +42,21 @@ export default class Map {
     const x1 = Math.floor(y / CELL_SIZE);
     const y1 = Math.floor(x / CELL_SIZE);
     return this.rows[x1][y1];
+  }
+
+  getNeighboursFromMatrix(row, col) {
+    const m = this.matrix;
+    const returnObj = {
+      top: undefined,
+      right: undefined,
+      bottom: undefined,
+      left: undefined
+    };
+    if (m[row - 1] && m[row - 1][col]) returnObj.top = CellMap[m[row - 1][col]];
+    if (m[row][col + 1]) returnObj.right = CellMap[m[row][col + 1]];
+    if (m[row + 1] && m[row + 1][col]) returnObj.bottom = CellMap[m[row + 1][col]];
+    if (m[row][col - 1]) returnObj.left = CellMap[m[row][col - 1]];
+    return returnObj;
   }
 
   getNeighboursByCoords(x, y, width, height) {
