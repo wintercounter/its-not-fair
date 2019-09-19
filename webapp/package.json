@@ -1,0 +1,41 @@
+{
+  "name": "its-not-fair-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "mhy",
+    "build": "mhy wp --mhy-prod",
+    "config": "mhy config typescript -io && mhy config eslint webpack prettier -io"
+  },
+  "author": "",
+  "license": "ISC",
+  "mhy": {
+    "mhy": {
+      "root": {
+        "ecosystem": {
+          "$replace": [
+            "webpack-dev-server",
+            "jest"
+          ]
+        }
+      }
+    },
+    "eslint": {
+      "root": {
+        "rules": {
+          "no-param-reassign": 0
+        }
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wintercounter/its-not-fair.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wintercounter/its-not-fair/issues"
+  },
+  "homepage": "https://github.com/wintercounter/its-not-fair#readme"
+}
