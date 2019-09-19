@@ -33,7 +33,8 @@ export default class Cell {
 
   containsPoint(x, y) {
     return false;
-  }
+  } // eslint-disable-next-line
+
 
   destroy() {}
 
