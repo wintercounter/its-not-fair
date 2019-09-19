@@ -26,4 +26,7 @@ export default class Cell {
     public containsPoint(x, y) {
         return false
     }
+
+    // eslint-disable-next-line
+    public destroy() {}
 }

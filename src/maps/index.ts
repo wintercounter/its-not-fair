@@ -21,8 +21,23 @@ export default class Map implements IMap {
 
     public matrix
 
+    public wallColors
+
     public draw() {
         this.eachCell(cell => cell.draw && cell.draw())
+    }
+
+    public renderRows() {
+        this.rows = this.matrix.map((cells, rowI) => {
+            return cells.map((cell, cellI) => {
+                if (this.rows && this.rows.length) {
+                    this.rows[rowI][cellI].destroy()
+                }
+                const x = CELL_SIZE * cellI
+                const y = CELL_SIZE * rowI
+                return new CellMap[cell]({ x, y, row: rowI, cell: cellI, map: this, wallColors: this.wallColors })
+            })
+        })
     }
 
     public eachCell(cb) {

@@ -13,6 +13,8 @@ export default class SimpleWall extends Cell {
 
     _defineProperty(this, "base", new PIXI.Graphics());
 
+    _defineProperty(this, "graphics", {});
+
     _defineProperty(this, "thicknessBig", 10);
 
     _defineProperty(this, "thicknessSmall", 2);
@@ -89,7 +91,7 @@ export default class SimpleWall extends Cell {
 
 
   draw1() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g1 = new PIXI.Graphics();
     g.beginFill(this.bigColor);
     g.drawRect(0, HALF - this.thicknessBig / 2, CELL_SIZE, this.thicknessBig);
     g.endFill();
@@ -102,7 +104,7 @@ export default class SimpleWall extends Cell {
 
 
   draw2() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g2 = new PIXI.Graphics();
     g.beginFill(this.bigColor);
     g.drawRect(HALF - this.thicknessBig / 2, 0, this.thicknessBig, CELL_SIZE);
     g.endFill();
@@ -116,8 +118,8 @@ export default class SimpleWall extends Cell {
 
 
   draw3() {
-    const l1 = new PIXI.Graphics();
-    const l2 = new PIXI.Graphics();
+    const l1 = this.graphics.g3l1 = new PIXI.Graphics();
+    const l2 = this.graphics.g3l2 = new PIXI.Graphics();
     l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5);
     l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF);
     l1.angle = 90;
@@ -132,8 +134,8 @@ export default class SimpleWall extends Cell {
 
 
   draw4() {
-    const l1 = new PIXI.Graphics();
-    const l2 = new PIXI.Graphics();
+    const l1 = this.graphics.g4l1 = new PIXI.Graphics();
+    const l2 = this.graphics.g4l2 = new PIXI.Graphics();
     l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5);
     l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF);
     l1.position.set(this.x + HALF, this.y);
@@ -146,8 +148,8 @@ export default class SimpleWall extends Cell {
 
 
   draw5() {
-    const l1 = new PIXI.Graphics();
-    const l2 = new PIXI.Graphics();
+    const l1 = this.graphics.g5l1 = new PIXI.Graphics();
+    const l2 = this.graphics.g5l2 = new PIXI.Graphics();
     l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5);
     l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF);
     l1.position.set(this.x, this.y + HALF);
@@ -162,8 +164,8 @@ export default class SimpleWall extends Cell {
 
 
   draw6() {
-    const l1 = new PIXI.Graphics();
-    const l2 = new PIXI.Graphics();
+    const l1 = this.graphics.g6l1 = new PIXI.Graphics();
+    const l2 = this.graphics.g6l2 = new PIXI.Graphics();
     l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5);
     l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF);
     l1.position.set(this.x + HALF, this.y + CELL_SIZE);
@@ -178,7 +180,7 @@ export default class SimpleWall extends Cell {
 
 
   draw7() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g7 = new PIXI.Graphics();
     const diff = this.thicknessBig / 2 / 2;
     g.beginFill(this.bigColor);
     g.drawCircle(diff, HALF, this.thicknessBig / 2);
@@ -195,7 +197,7 @@ export default class SimpleWall extends Cell {
 
 
   draw8() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g8 = new PIXI.Graphics();
     const diff = this.thicknessBig / 2 / 2;
     g.beginFill(this.bigColor);
     g.drawCircle(HALF - diff, HALF, this.thicknessBig / 2);
@@ -212,7 +214,7 @@ export default class SimpleWall extends Cell {
 
 
   draw9() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g9 = new PIXI.Graphics();
     const diff = this.thicknessBig / 2 / 2;
     g.beginFill(this.bigColor);
     g.drawCircle(HALF, HALF + diff, this.thicknessBig / 2);
@@ -229,7 +231,7 @@ export default class SimpleWall extends Cell {
 
 
   draw10() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g10 = new PIXI.Graphics();
     const diff = this.thicknessBig / 2 / 2;
     g.beginFill(this.bigColor);
     g.drawCircle(HALF, HALF, this.thicknessBig / 2);
@@ -246,7 +248,7 @@ export default class SimpleWall extends Cell {
 
 
   draw11() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g11 = new PIXI.Graphics();
     g.beginFill(this.bigColor);
     g.drawRect(0, HALF - this.thicknessBig / 2, CELL_SIZE, this.thicknessBig);
     g.endFill();
@@ -266,7 +268,7 @@ export default class SimpleWall extends Cell {
 
 
   draw12() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g12 = new PIXI.Graphics();
     g.beginFill(this.bigColor);
     g.drawRect(0, HALF - this.thicknessBig / 2, CELL_SIZE, this.thicknessBig);
     g.endFill();
@@ -286,7 +288,7 @@ export default class SimpleWall extends Cell {
 
 
   draw13() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g13 = new PIXI.Graphics();
     g.beginFill(this.bigColor);
     g.drawRect(HALF - this.thicknessBig / 2, 0, this.thicknessBig, CELL_SIZE);
     g.endFill();
@@ -307,7 +309,7 @@ export default class SimpleWall extends Cell {
 
 
   draw14() {
-    const g = new PIXI.Graphics();
+    const g = this.graphics.g14 = new PIXI.Graphics();
     g.beginFill(this.bigColor);
     g.drawRect(HALF - this.thicknessBig / 2, 0, this.thicknessBig, CELL_SIZE);
     g.endFill();
@@ -338,6 +340,14 @@ export default class SimpleWall extends Cell {
   containsPoint(x, y) {
     const point = new PIXI.Point(x, y);
     return this.base.containsPoint(point);
+  }
+
+  destroy() {
+    Object.entries(this.graphics).forEach(([g, key]) => {
+      this.graphics[g].destroy();
+      delete this.graphics[key];
+    });
+    this.base.destroy();
   }
 
 }
