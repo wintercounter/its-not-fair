@@ -19,7 +19,7 @@ export default class SpawnPoint extends SimpleSpace {
         this.graphics.endFill()
     }
 
-    destroy() {
+    public destroy() {
         this.graphics.destroy()
     }
 }

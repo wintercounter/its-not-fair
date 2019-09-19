@@ -31,8 +31,7 @@ export default class Map implements IMap {
         this.rows = this.matrix.map((cells, rowI) => {
             return cells.map((cell, cellI) => {
                 if (this.rows && this.rows.length) {
-                    if (!(this.rows[rowI][cellI] instanceof CellMap[cell])) this.rows[rowI][cellI].destroy()
-                    else return this.rows[rowI][cellI]
+                    this.rows[rowI][cellI].destroy()
                 }
                 const x = CELL_SIZE * cellI
                 const y = CELL_SIZE * rowI

@@ -118,8 +118,8 @@ export default class SimpleWall extends Cell {
 
     // ( top left corner
     private draw3() {
-        const l1 = (this.graphics.g3_l1 = new PIXI.Graphics())
-        const l2 = (this.graphics.g3_l2 = new PIXI.Graphics())
+        const l1 = (this.graphics.g3l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.g3l2 = new PIXI.Graphics())
 
         l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
         l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF)
@@ -137,8 +137,8 @@ export default class SimpleWall extends Cell {
 
     // ( bottom left corner
     private draw4() {
-        const l1 = (this.graphics.g4_l1 = new PIXI.Graphics())
-        const l2 = (this.graphics.g4_l2 = new PIXI.Graphics())
+        const l1 = (this.graphics.g4l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.g4l2 = new PIXI.Graphics())
 
         l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
         l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF)
@@ -154,8 +154,8 @@ export default class SimpleWall extends Cell {
 
     // ) bottom right corner
     private draw5() {
-        const l1 = (this.graphics.g5_l1 = new PIXI.Graphics())
-        const l2 = (this.graphics.g5_l2 = new PIXI.Graphics())
+        const l1 = (this.graphics.g5l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.g5l2 = new PIXI.Graphics())
 
         l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
         l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF)
@@ -173,8 +173,8 @@ export default class SimpleWall extends Cell {
 
     // ) top right corner
     private draw6() {
-        const l1 = (this.graphics.g6_l1 = new PIXI.Graphics())
-        const l2 = (this.graphics.g6_l2 = new PIXI.Graphics())
+        const l1 = (this.graphics.g6l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.g6l2 = new PIXI.Graphics())
 
         l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
         l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF)
@@ -401,7 +401,7 @@ export default class SimpleWall extends Cell {
         return this.base.containsPoint(point)
     }
 
-    destroy() {
+    public destroy() {
         Object.entries(this.graphics).forEach(([g, key]) => {
             this.graphics[g].destroy()
             delete this.graphics[key]

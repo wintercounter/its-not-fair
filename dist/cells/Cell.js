@@ -35,4 +35,6 @@ export default class Cell {
     return false;
   }
 
+  destroy() {}
+
 }
