@@ -1,7 +1,10 @@
+import * as PIXI from 'pixi.js'
 import { CELL_SIZE } from '@/constants/Sizes'
 import SimpleSpace from '@/cells/SimpleSpace'
 
 export default class SpawnPoint extends SimpleSpace {
+    public graphics = new PIXI.Graphics()
+
     public isOccupied = false
 
     public hasPlayer(): void {
