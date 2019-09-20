@@ -32,60 +32,76 @@ export default class SimpleWall extends Cell {
     private drawByNeighbours() {
         const { top, right, bottom, left } = this.map.getNeighboursFromMatrix(this.row, this.cell)
 
-        // TODO have proper draw for this case also
-        if (top && bottom && left && right) {
-            this.thicknessBig = CELL_SIZE
-            this.thicknessSmall = 0
-        }
-
-        if (top && !bottom && !left && !right) {
+        if (top !== SimpleWall && bottom !== SimpleWall && left !== SimpleWall && right !== SimpleWall) {
+            // • single wall
+            this.drawSingleWall()
+        } else if (top && bottom !== SimpleWall && left !== SimpleWall && right !== SimpleWall) {
             // | bottom to top starter
-            this.draw10()
-        } else if (!top && bottom && !left && !right) {
+            this.drawStarterBottomToTop()
+        } else if (top !== SimpleWall && bottom && left !== SimpleWall && !right) {
             // | top to bottom starter
-            this.draw9()
-        } else if (!top && !bottom && !left && right) {
+            this.drawStarterTopToBottom()
+        } else if (top !== SimpleWall && bottom !== SimpleWall && left !== SimpleWall && right) {
             // - left to right starter
-            this.draw7()
-        } else if (!top && !bottom && !right && left) {
+            this.drawStarterLeftToRight()
+        } else if (top !== SimpleWall && bottom !== SimpleWall && right !== SimpleWall && left) {
             // - right to left starter
-            this.draw8()
+            this.drawStarterRightToLeft()
         } else if (top !== SimpleWall && left !== SimpleWall) {
-            // ( top left corner
-            this.draw3()
+            // ◜ top left corner
+            this.drawCornerTopLeft()
         } else if (bottom !== SimpleWall && left !== SimpleWall) {
-            // ( bottom left corner
-            this.draw4()
+            // ◟ bottom left corner
+            this.drawCornerBottomLeft()
         } else if (bottom !== SimpleWall && right !== SimpleWall) {
-            // ) bottom right corner
-            this.draw5()
+            // ◞ bottom right corner
+            this.drawCornerBottomRight()
         } else if (top !== SimpleWall && right !== SimpleWall) {
-            // ) top right corner
-            this.draw6()
-        } else if (!top && right === SimpleWall && left === SimpleWall && bottom === SimpleWall) {
-            // - Horizontal with bottom neighbour T
-            this.draw11()
-        } else if (!bottom && right === SimpleWall && left === SimpleWall && top === SimpleWall) {
-            // - Horizontal with top neighbour L
-            this.draw12()
-        } else if (!right && bottom === SimpleWall && left === SimpleWall && top === SimpleWall) {
-            // | Vertical with left neighbour -|
-            this.draw13()
-        } else if (!left && bottom === SimpleWall && right === SimpleWall && top === SimpleWall) {
-            // | Vertical with right neighbour |-
-            this.draw14()
+            // ◝ top right corner
+            this.drawCornerTopRight()
+        } else if (top !== SimpleWall && right === SimpleWall && left === SimpleWall && bottom === SimpleWall) {
+            // ⊤ Horizontal with bottom neighbour
+            this.drawHorizontalWithBottomNeighbour()
+        } else if (bottom !== SimpleWall && right === SimpleWall && left === SimpleWall && top === SimpleWall) {
+            // ⊥  Horizontal with top neighbour
+            this.drawHorizontalWithTopNeighbour()
+        } else if (right !== SimpleWall && bottom === SimpleWall && left === SimpleWall && top === SimpleWall) {
+            // ⊣ Vertical with left neighbour
+            this.drawVerticalWithLeftNeighbour()
+        } else if (left !== SimpleWall && bottom === SimpleWall && right === SimpleWall && top === SimpleWall) {
+            // ⊢ Vertical with right neighbour
+            this.drawVerticalWithRightNeighbour()
+        } else if (top === SimpleWall && bottom === SimpleWall && left === SimpleWall && right === SimpleWall) {
+            // + CrossWall
+            this.drawCrossWall()
         } else if (top === SimpleWall && bottom === SimpleWall) {
             // | Vertical
-            this.draw2()
+            this.drawVertical()
         } else {
             // - Horizontal
-            this.draw1()
+            this.drawHorizontal()
         }
     }
 
+    // • single wall
+    private drawSingleWall() {
+        const g = (this.graphics.g = new PIXI.Graphics())
+
+        g.beginFill(this.bigColor)
+        g.drawCircle(HALF, HALF, this.thicknessBig / 2)
+        g.endFill()
+
+        g.beginFill(this.smallColor)
+        g.drawCircle(HALF, HALF, this.thicknessBig / 4)
+        g.endFill()
+
+        g.position.set(this.x, this.y)
+        this.map.graphicsLayer.addChild(g)
+    }
+
     // - Horizontal
-    private draw1() {
-        const g = (this.graphics.g1 = new PIXI.Graphics())
+    private drawHorizontal() {
+        const g = (this.graphics.g = new PIXI.Graphics())
         g.beginFill(this.bigColor)
         g.drawRect(0, HALF - this.thicknessBig / 2, CELL_SIZE, this.thicknessBig)
         g.endFill()
@@ -99,8 +115,8 @@ export default class SimpleWall extends Cell {
     }
 
     // | Vertical
-    private draw2() {
-        const g = (this.graphics.g2 = new PIXI.Graphics())
+    private drawVertical() {
+        const g = (this.graphics.g = new PIXI.Graphics())
 
         g.beginFill(this.bigColor)
         g.drawRect(HALF - this.thicknessBig / 2, 0, this.thicknessBig, CELL_SIZE)
@@ -116,10 +132,47 @@ export default class SimpleWall extends Cell {
         this.map.graphicsLayer.addChild(g)
     }
 
-    // ( top left corner
-    private draw3() {
-        const l1 = (this.graphics.g3l1 = new PIXI.Graphics())
-        const l2 = (this.graphics.g3l2 = new PIXI.Graphics())
+    // + CrossWall
+    private drawCrossWall() {
+        const l1 = (this.graphics.l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.l2 = new PIXI.Graphics())
+
+        l1.beginFill(this.bigColor)
+        l1.drawRect(HALF - this.thicknessBig / 2, 0, this.thicknessBig, CELL_SIZE)
+        l1.endFill()
+
+        l1.beginFill(this.bigColor)
+        l1.drawRect(0, HALF - this.thicknessBig / 2, CELL_SIZE, this.thicknessBig)
+        l1.endFill()
+
+        l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
+        l1.drawCircle(HALF, HALF, HALF - this.thicknessBig)
+        l1.endFill()
+
+        l1.position.set(this.x, this.y)
+
+        l2.beginFill(this.smallColor)
+        l2.drawRect(0, HALF - this.thicknessSmall / 2, CELL_SIZE, this.thicknessSmall)
+        l2.endFill()
+
+        l2.beginFill(this.smallColor)
+        l2.drawRect(HALF - this.thicknessSmall / 2, 0, this.thicknessSmall, CELL_SIZE)
+        l2.endFill()
+
+        l2.beginFill(this.smallColor)
+        l2.drawCircle(HALF, HALF, HALF - this.thicknessBig)
+        l2.endFill()
+
+        l2.position.set(this.x, this.y)
+
+        this.map.graphicsLayer.addChild(l1)
+        this.map.graphicsLayer.addChild(l2)
+    }
+
+    // ◜ top left corner
+    private drawCornerTopLeft() {
+        const l1 = (this.graphics.l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.l2 = new PIXI.Graphics())
 
         l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
         l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF)
@@ -135,10 +188,10 @@ export default class SimpleWall extends Cell {
         this.map.graphicsLayer.addChild(l2)
     }
 
-    // ( bottom left corner
-    private draw4() {
-        const l1 = (this.graphics.g4l1 = new PIXI.Graphics())
-        const l2 = (this.graphics.g4l2 = new PIXI.Graphics())
+    // ◟bottom left corner
+    private drawCornerBottomLeft() {
+        const l1 = (this.graphics.l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.l2 = new PIXI.Graphics())
 
         l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
         l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF)
@@ -152,10 +205,10 @@ export default class SimpleWall extends Cell {
         this.map.graphicsLayer.addChild(l2)
     }
 
-    // ) bottom right corner
-    private draw5() {
-        const l1 = (this.graphics.g5l1 = new PIXI.Graphics())
-        const l2 = (this.graphics.g5l2 = new PIXI.Graphics())
+    // ◞ bottom right corner
+    private drawCornerBottomRight() {
+        const l1 = (this.graphics.l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.l2 = new PIXI.Graphics())
 
         l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
         l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF)
@@ -171,10 +224,10 @@ export default class SimpleWall extends Cell {
         this.map.graphicsLayer.addChild(l2)
     }
 
-    // ) top right corner
-    private draw6() {
-        const l1 = (this.graphics.g6l1 = new PIXI.Graphics())
-        const l2 = (this.graphics.g6l2 = new PIXI.Graphics())
+    // ◝ top right corner
+    private drawCornerTopRight() {
+        const l1 = (this.graphics.l1 = new PIXI.Graphics())
+        const l2 = (this.graphics.l2 = new PIXI.Graphics())
 
         l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
         l1.bezierCurveTo(0, HALF, HALF, HALF, HALF, HALF)
@@ -191,8 +244,8 @@ export default class SimpleWall extends Cell {
     }
 
     // - left to right starter
-    private draw7() {
-        const g = (this.graphics.g7 = new PIXI.Graphics())
+    private drawStarterLeftToRight() {
+        const g = (this.graphics.g = new PIXI.Graphics())
         const diff = this.thicknessBig / 2 / 2
 
         g.beginFill(this.bigColor)
@@ -212,8 +265,8 @@ export default class SimpleWall extends Cell {
     }
 
     // - right to left starter
-    private draw8() {
-        const g = (this.graphics.g8 = new PIXI.Graphics())
+    private drawStarterRightToLeft() {
+        const g = (this.graphics.g = new PIXI.Graphics())
         const diff = this.thicknessBig / 2 / 2
 
         g.beginFill(this.bigColor)
@@ -233,8 +286,8 @@ export default class SimpleWall extends Cell {
     }
 
     // | top to bottom starter
-    private draw9() {
-        const g = (this.graphics.g9 = new PIXI.Graphics())
+    private drawStarterTopToBottom() {
+        const g = (this.graphics.g = new PIXI.Graphics())
         const diff = this.thicknessBig / 2 / 2
 
         g.beginFill(this.bigColor)
@@ -254,9 +307,8 @@ export default class SimpleWall extends Cell {
     }
 
     // | bottom to top starter
-    private draw10() {
-        const g = (this.graphics.g10 = new PIXI.Graphics())
-        const diff = this.thicknessBig / 2 / 2
+    private drawStarterBottomToTop() {
+        const g = (this.graphics.g = new PIXI.Graphics())
 
         g.beginFill(this.bigColor)
         g.drawCircle(HALF, HALF, this.thicknessBig / 2)
@@ -274,9 +326,9 @@ export default class SimpleWall extends Cell {
         this.map.graphicsLayer.addChild(g)
     }
 
-    // - Horizontal with bottom neighbour T
-    private draw11() {
-        const g = (this.graphics.g11 = new PIXI.Graphics())
+    // ⊤ Horizontal with bottom neighbour
+    private drawHorizontalWithBottomNeighbour() {
+        const g = (this.graphics.g = new PIXI.Graphics())
         g.beginFill(this.bigColor)
         g.drawRect(0, HALF - this.thicknessBig / 2, CELL_SIZE, this.thicknessBig)
         g.endFill()
@@ -303,9 +355,9 @@ export default class SimpleWall extends Cell {
         this.map.graphicsLayer.addChild(g)
     }
 
-    // - Horizontal with top neighbour L
-    private draw12() {
-        const g = (this.graphics.g12 = new PIXI.Graphics())
+    // ⊥  Horizontal with top neighbour
+    private drawHorizontalWithTopNeighbour() {
+        const g = (this.graphics.g = new PIXI.Graphics())
         g.beginFill(this.bigColor)
         g.drawRect(0, HALF - this.thicknessBig / 2, CELL_SIZE, this.thicknessBig)
         g.endFill()
@@ -327,9 +379,9 @@ export default class SimpleWall extends Cell {
         this.map.graphicsLayer.addChild(g)
     }
 
-    // | Vertical with left neighbour -|
-    private draw13() {
-        const g = (this.graphics.g13 = new PIXI.Graphics())
+    // ⊣ Vertical with left neighbour
+    private drawVerticalWithLeftNeighbour() {
+        const g = (this.graphics.g = new PIXI.Graphics())
 
         g.beginFill(this.bigColor)
         g.drawRect(HALF - this.thicknessBig / 2, 0, this.thicknessBig, CELL_SIZE)
@@ -353,9 +405,9 @@ export default class SimpleWall extends Cell {
         this.map.graphicsLayer.addChild(g)
     }
 
-    // | Vertical with right neighbour |-
-    private draw14() {
-        const g = (this.graphics.g14 = new PIXI.Graphics())
+    // ⊢ Vertical with right neighbour
+    private drawVerticalWithRightNeighbour() {
+        const g = (this.graphics.g = new PIXI.Graphics())
 
         g.beginFill(this.bigColor)
         g.drawRect(HALF - this.thicknessBig / 2, 0, this.thicknessBig, CELL_SIZE)
