@@ -13,7 +13,7 @@ export default class SimpleWall extends Cell {
 
     public graphics = {}
 
-    private thicknessBig = 8
+    private thicknessBig = 10
 
     private thicknessSmall = 2
 
@@ -134,31 +134,19 @@ export default class SimpleWall extends Cell {
 
     // + CrossWall
     private drawCrossWall() {
-        const g = (this.graphics.g = new PIXI.Graphics())
-
-        g.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
-        g.drawCircle(HALF, HALF, HALF - this.thicknessBig / 2)
-        g.endFill()
-
-        g.lineStyle(this.thicknessSmall, this.smallColor, 1, 0.5)
-        g.drawCircle(HALF, HALF, HALF - this.thicknessBig / 2)
-        g.endFill()
-
-        g.position.set(this.x, this.y)
-
-        this.map.graphicsLayer.addChild(g)
-
-        /*
         const l1 = (this.graphics.l1 = new PIXI.Graphics())
         const l2 = (this.graphics.l2 = new PIXI.Graphics())
 
         l1.beginFill(this.bigColor)
         l1.drawRect(HALF - this.thicknessBig / 2, 0, this.thicknessBig, CELL_SIZE)
         l1.endFill()
-        l1.position.set(this.x, this.y)
 
         l1.beginFill(this.bigColor)
         l1.drawRect(0, HALF - this.thicknessBig / 2, CELL_SIZE, this.thicknessBig)
+        l1.endFill()
+
+        l1.lineStyle(this.thicknessBig, this.bigColor, 1, 0.5)
+        l1.drawCircle(HALF, HALF, HALF - this.thicknessBig)
         l1.endFill()
 
         l1.position.set(this.x, this.y)
@@ -171,11 +159,14 @@ export default class SimpleWall extends Cell {
         l2.drawRect(HALF - this.thicknessSmall / 2, 0, this.thicknessSmall, CELL_SIZE)
         l2.endFill()
 
+        l2.beginFill(this.smallColor)
+        l2.drawCircle(HALF, HALF, HALF - this.thicknessBig)
+        l2.endFill()
+
         l2.position.set(this.x, this.y)
 
         this.map.graphicsLayer.addChild(l1)
         this.map.graphicsLayer.addChild(l2)
-        */
     }
 
     // ◜ top left corner
