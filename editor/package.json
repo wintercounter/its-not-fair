@@ -1,0 +1,36 @@
+{
+    "name": "its-not-fair-map-editor",
+    "version": "1.0.0",
+    "description": "Map editor for it's not fair!",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "mhy",
+        "build": "mhy wp --mhy-prod",
+        "config": "mhy config eslint webpack prettier -io"
+    },
+    "author": "Andy1210",
+    "license": "MIT",
+    "mhy": {
+        "mhy": {
+            "root": {
+                "ecosystem": {
+                    "$replace": [
+                        "webpack-dev-server",
+                        "jest"
+                    ]
+                }
+            }
+        },
+        "manifest": {
+            "root": {
+                "name": "it's not fair! map Editor",
+                "short_name": "its-not-fair-map-editor",
+                "description": "Map editor for it's not fair!",
+                "orientation": "landscape",
+                "display": "standalone",
+                "background_color": "#222222"
+            }
+        }
+    }
+}
