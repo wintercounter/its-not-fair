@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import * as PIXI from 'pixi.js'
-import One from 'its-not-fair/dist/maps/One'
+import One from '../../game/dist/maps/One'
 import { Canvas, AttributeEditor } from '@/components'
 import { loadLevel } from '@/store/actions'
 import Store, { StoreContext } from '@/store'
