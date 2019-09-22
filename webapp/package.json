@@ -1,5 +1,5 @@
 {
-  "name": "its-not-fair-client",
+  "name": "@inf/webapp",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,6 +14,10 @@
   "mhy": {
     "mhy": {
       "root": {
+        "defaultAliases": {
+          "@inf/client": "../client/dist",
+          "@inf/game": "../game/dist"
+        },
         "ecosystem": {
           "$replace": [
             "webpack-dev-server",
@@ -37,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/wintercounter/its-not-fair/issues"
   },
-  "homepage": "https://github.com/wintercounter/its-not-fair#readme"
+  "homepage": "https://github.com/wintercounter/its-not-fair#readme",
+  "dependencies": {
+    "copy-webpack-plugin": "^5.0.4"
+  }
 }

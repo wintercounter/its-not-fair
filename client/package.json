@@ -2,11 +2,12 @@
     "name": "its-not-fair-client",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "dist/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "mhy",
-        "build": "mhy wp --mhy-prod",
+        "build": "mhy bb --mhy-env=prod",
+        "watch": "npm run build -- --watch",
         "config": "mhy config typescript -io && mhy config eslint webpack prettier -io"
     },
     "author": "",
@@ -37,5 +38,8 @@
     "bugs": {
         "url": "https://github.com/wintercounter/its-not-fair/issues"
     },
-    "homepage": "https://github.com/wintercounter/its-not-fair#readme"
+    "homepage": "https://github.com/wintercounter/its-not-fair#readme",
+    "dependencies": {
+        "colyseus.js": "^0.11.1"
+    }
 }

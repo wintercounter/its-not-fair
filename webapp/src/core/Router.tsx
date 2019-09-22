@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
-import History from 'history/createBrowserHistory'
+import { History } from 'history'
 import { hot } from 'react-hot-loader'
 
-import { Main } from '@/layouts'
-import { Characters, Episodes } from '@/pages'
+import { Main, Client } from '@/layouts'
+import { Home, Game, Lobby } from '@/screens'
 
 const WithLayout = ({ layout: Layout, component: Component, ...rest }) => (
     <Route
@@ -20,11 +20,12 @@ const WithLayout = ({ layout: Layout, component: Component, ...rest }) => (
 
 const WithHotLayout = hot(module)(WithLayout)
 
-const Router: React.FC<{ history: History }> = ({ history }) => (
+const Router: FC<{ history: History }> = ({ history }) => (
     <ConnectedRouter history={history}>
         <Switch>
-            <WithHotLayout layout={Main} path="/" exact component={Characters} />
-            <WithHotLayout layout={Main} path="/episodes" exact component={Episodes} />
+            <WithHotLayout layout={Main} path="/" exact component={Home} />
+            <WithHotLayout layout={Client} path="/game" exact component={Game} />
+            <WithHotLayout layout={Client} path="/lobby" exact component={Lobby} />
         </Switch>
     </ConnectedRouter>
 )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import History from 'history/createBrowserHistory'
+import { History } from 'history'
 
 import { Router } from '@/core'
 

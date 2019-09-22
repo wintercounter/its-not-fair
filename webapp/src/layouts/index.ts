@@ -1,1 +1,2 @@
-export { default as Main } from './Main/index' // eslint-disable-line
+export { default as Main } from './Main'
+export { default as Client } from './Client'
