@@ -3,7 +3,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //import { DropShadowFilter } from '@pixi/filter-drop-shadow'
 import * as PIXI from 'pixi.js';
 import Cell from "./Cell";
-import { CELL_SIZE } from "../constants/Sizes";
+import { CELL_SIZE } from "../../../constants/Sizes";
 PIXI.GRAPHICS_CURVES.maxLength = 20;
 PIXI.GRAPHICS_CURVES.minSegments = 16;
 const HALF = CELL_SIZE / 2;

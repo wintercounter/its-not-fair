@@ -2,7 +2,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 import * as PIXI from 'pixi.js';
 import Player from "./";
-import { CELL_SIZE } from "../constants/Sizes";
+import { CELL_SIZE } from "../../../constants/Sizes";
 export default class PacMan extends Player {
   constructor(args) {
     super(args);

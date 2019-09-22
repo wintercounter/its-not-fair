@@ -16,7 +16,8 @@
       "root": {
         "defaultAliases": {
           "@inf/client": "../client/dist",
-          "@inf/game": "../game/dist"
+          "@inf/game": "../game/dist",
+          "$hared": "../$hared"
         },
         "ecosystem": {
           "$replace": [

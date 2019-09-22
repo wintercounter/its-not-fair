@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { CELL_SIZE } from '@/constants/Sizes'
+import { CELL_SIZE } from '$hared/../constants/Sizes'
 import SimpleSpace from '@/cells/SimpleSpace'
 
 export default class SpawnPoint extends SimpleSpace {

@@ -13,9 +13,9 @@ export default class Map {
 
     _defineProperty(this, "rows", void 0);
 
-    _defineProperty(this, "matrix", void 0);
-
     _defineProperty(this, "wallColors", void 0);
+
+    _defineProperty(this, "matrix", void 0);
   }
 
   draw() {

@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import Player from '@/players'
-import { CELL_SIZE } from '@/constants/Sizes'
-import { LEFT, RIGHT } from '@/constants/Directions'
+import { CELL_SIZE } from '$hared/../constants/Sizes'
+import { LEFT, RIGHT } from '$hared/../constants/Directions'
 
 const ANIM_SCALE = 0.8
 

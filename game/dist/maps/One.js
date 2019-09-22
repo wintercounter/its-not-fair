@@ -1,6 +1,6 @@
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-import Map from "./";
+import Map from "../../../$hared/maps";
 const WALL_COLORS = [[0x0099ff, 0x003d66]];
 export default class One extends Map {
   constructor() {

@@ -1,4 +1,4 @@
-import Map from '@/maps'
+import Map from '$hared/maps'
 
 const WALL_COLORS = [[0x0099ff, 0x003d66]]
 

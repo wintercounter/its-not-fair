@@ -10,8 +10,8 @@ const Lobby = () => {
         const options = { name: '' }
         while (!(options.name = window.prompt('Give us your name'))) {} // eslint-disable-line
 
-        Client.joinLobby(options).then(lobby => {
-            lobby.onStateChange(state => {
+        Client.joinLobby(options).then(room => {
+            room.onStateChange(state => {
                 console.log('chnagestate', state)
                 setState({ ...state })
             })

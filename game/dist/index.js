@@ -5,7 +5,8 @@ export default class Game {
   constructor({
     getMap,
     getPlayers,
-    container: _container
+    container: _container,
+    client
   }) {
     _defineProperty(this, "app", new PIXI.Application({
       width: 704,
@@ -25,9 +26,11 @@ export default class Game {
 
     _defineProperty(this, "container", void 0);
 
+    _defineProperty(this, "client", void 0);
+
     _defineProperty(this, "setup", () => {
       this.map = this.getMap(this.app);
-      this.players = this.getPlayers(this.app, this.map);
+      this.players = this.getPlayers(this.app, this.map, this);
       this.app.renderer.backgroundColor = 0x000000;
       this.app.stage.addChild(this.map.baseLayer);
       this.app.stage.addChild(this.map.graphicsLayer);
@@ -47,6 +50,7 @@ export default class Game {
     this.getPlayers = getPlayers;
     this.getMap = getMap;
     this.container = _container;
+    this.client = client;
     this.load();
   }
 

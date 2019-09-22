@@ -3,9 +3,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 import * as PIXI from 'pixi.js';
 import Hammer from 'hammerjs';
 import keyboard from "../utils/keyboardEvents";
-import { DOWN, LEFT, RIGHT, UP } from "../constants/Directions";
+import { DOWN, LEFT, RIGHT, UP } from "../../../constants/Directions";
 import SpawnPoint from "../cells/SpawnPoint";
-import { CELL_SIZE } from "../constants/Sizes";
+import { CELL_SIZE } from "../../../constants/Sizes";
 const DIRECTION_PROPS = {
   [UP]: {
     angle: 270,
@@ -57,10 +57,11 @@ export default class Player {
   }
 
   constructor({
+    game,
     map,
     app,
     mixins = [],
-    control = false
+    controls = false
   }) {
     _defineProperty(this, "container", new PIXI.Container());
 
@@ -76,17 +77,20 @@ export default class Player {
 
     _defineProperty(this, "map", void 0);
 
+    _defineProperty(this, "game", void 0);
+
     _defineProperty(this, "base", void 0);
 
     _defineProperty(this, "mixins", void 0);
 
-    _defineProperty(this, "control", void 0);
+    _defineProperty(this, "controls", void 0);
 
     _defineProperty(this, "velocity", 4);
 
     this.map = map;
     this.app = app;
-    this.control = control; // @ts-ignore
+    this.game = game;
+    this.controls = controls; // @ts-ignore
 
     this.mixins = mixins.map(mixin => new mixin(this));
     this.bind();
@@ -222,7 +226,7 @@ export default class Player {
   }
 
   bind() {
-    if (!this.control) {
+    if (!this.controls) {
       return;
     } //Capture the keyboard arrow keys
 
@@ -232,13 +236,29 @@ export default class Player {
           right = keyboard('ArrowRight'),
           down = keyboard('ArrowDown');
 
-    left.press = () => this.nextDirection = LEFT;
+    left.press = () => {
+      this.game.client.room.send({
+        nextDirection: LEFT
+      });
+    };
 
-    up.press = () => this.nextDirection = UP;
+    up.press = () => {
+      this.game.client.room.send({
+        nextDirection: UP
+      });
+    };
 
-    right.press = () => this.nextDirection = RIGHT;
+    right.press = () => {
+      this.game.client.room.send({
+        nextDirection: RIGHT
+      });
+    };
 
-    down.press = () => this.nextDirection = DOWN; // Touch events
+    down.press = () => {
+      this.game.client.room.send({
+        nextDirection: DOWN
+      });
+    }; // Touch events
 
 
     const mc = new Hammer(document.documentElement);
@@ -247,7 +267,17 @@ export default class Player {
       threshold: 10
     });
     mc.on('panleft panright panup pandown', ev => {
-      Math.abs(ev.velocity) > 0.2 && (this.nextDirection = ev.type.replace('pan', ''));
+      if (Math.abs(ev.velocity) > 0.2) {
+        this.game.client.room.send({
+          nextDirection: ev.type.replace('pan', '')
+        });
+      }
+    });
+    this.game.client.room.onStateChange(({
+      players
+    }) => {
+      console.log('stateChange');
+      this.nextDirection = players[this.game.client.room.sessionId].nextDirection;
     });
   }
 

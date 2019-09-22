@@ -1,7 +1,7 @@
 import * as Colyseus from 'colyseusjs'
 
 export default class Client extends Colyseus.Client {
-    public lobby
+    public room
 
     public game
 
@@ -10,40 +10,19 @@ export default class Client extends Colyseus.Client {
     }
 
     public joinLobby(options) {
-        return this.joinOrCreate('my_room', options).then(lobby => {
-            this.lobby = lobby
-            console.log(lobby.sessionId, 'joined lobby', lobby)
+        return this.joinOrCreate('my_room', options).then(room => {
+            this.room = room
+            console.log(room.sessionId, 'joined lobby', room)
 
-            lobby.onError(() => {
-                console.log(this.id, `couldn't join`, lobby.name)
+            room.onError(() => {
+                console.log(this.id, `couldn't join`, room.name)
             })
 
-            lobby.onLeave(() => {
-                console.log(this.id, 'left', lobby.name)
+            room.onLeave(() => {
+                console.log(this.id, 'left', room.name)
             })
 
-            return lobby
+            return room
         })
     }
-
-    public createGame(options) {
-        return this.joinOrCreate('game', options).then(game => {
-            this.game = game
-            console.log(game.sessionId, 'joined lobby', game.name)
-
-            console.log(game)
-
-            game.onError(() => {
-                console.log(this.id, `couldn't join`, game.name)
-            })
-
-            game.onLeave(() => {
-                console.log(this.id, 'left', game.name)
-            })
-
-            return game
-        })
-    }
-
-    public joinGame() {}
 }

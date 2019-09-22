@@ -15,7 +15,8 @@
         "mhy": {
             "root": {
                 "defaultAliases": {
-                    "@inf/client": "../client/dist"
+                    "@inf/client": "../client/dist",
+                    "$hared": "../$hared"
                 },
                 "ecosystem": {
                     "$replace": [

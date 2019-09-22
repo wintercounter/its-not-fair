@@ -2,8 +2,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 import * as PIXI from 'pixi.js';
 import Player from "./";
-import { CELL_SIZE } from "../constants/Sizes";
-import { LEFT, RIGHT } from "../constants/Directions";
+import { CELL_SIZE } from "../../../constants/Sizes";
+import { LEFT, RIGHT } from "../../../constants/Directions";
 const ANIM_SCALE = 0.8;
 export default class Monster extends Player {
   constructor(args) {

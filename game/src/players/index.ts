@@ -2,9 +2,9 @@ import * as PIXI from 'pixi.js'
 import Hammer from 'hammerjs'
 
 import keyboard from '@/utils/keyboardEvents'
-import { DOWN, LEFT, RIGHT, UP } from '@/constants/Directions'
+import { DOWN, LEFT, RIGHT, UP } from '$hared/../constants/Directions'
 import SpawnPoint from '@/cells/SpawnPoint'
-import { CELL_SIZE } from '@/constants/Sizes'
+import { CELL_SIZE } from '$hared/../constants/Sizes'
 
 const DIRECTION_PROPS = {
     [UP]: {
@@ -48,11 +48,13 @@ export default class Player implements IPlayer {
 
     public map
 
+    public game
+
     public base
 
     public mixins
 
-    public control
+    public controls
 
     public velocity = 4
 
@@ -87,10 +89,11 @@ export default class Player implements IPlayer {
         base.y = CELL_SIZE / -2
     }
 
-    public constructor({ map, app, mixins = [], control = false }) {
+    public constructor({ game, map, app, mixins = [], controls = false }) {
         this.map = map
         this.app = app
-        this.control = control
+        this.game = game
+        this.controls = controls
         // @ts-ignore
         this.mixins = mixins.map(mixin => new mixin(this))
         this.bind()
@@ -215,7 +218,7 @@ export default class Player implements IPlayer {
     }
 
     private bind() {
-        if (!this.control) {
+        if (!this.controls) {
             return
         }
         //Capture the keyboard arrow keys
@@ -224,16 +227,31 @@ export default class Player implements IPlayer {
             right = keyboard('ArrowRight'),
             down = keyboard('ArrowDown')
 
-        left.press = () => (this.nextDirection = LEFT)
-        up.press = () => (this.nextDirection = UP)
-        right.press = () => (this.nextDirection = RIGHT)
-        down.press = () => (this.nextDirection = DOWN)
+        left.press = () => {
+            this.game.client.room.send({ nextDirection: LEFT })
+        }
+        up.press = () => {
+            this.game.client.room.send({ nextDirection: UP })
+        }
+        right.press = () => {
+            this.game.client.room.send({ nextDirection: RIGHT })
+        }
+        down.press = () => {
+            this.game.client.room.send({ nextDirection: DOWN })
+        }
 
         // Touch events
         const mc = new Hammer(document.documentElement)
         mc.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 10 })
         mc.on('panleft panright panup pandown', ev => {
-            Math.abs(ev.velocity) > 0.2 && (this.nextDirection = ev.type.replace('pan', ''))
+            if (Math.abs(ev.velocity) > 0.2) {
+                this.game.client.room.send({ nextDirection: ev.type.replace('pan', '') })
+            }
+        })
+
+        this.game.client.room.onStateChange(({ players }) => {
+            console.log('stateChange')
+            this.nextDirection = players[this.game.client.room.sessionId].nextDirection
         })
     }
 }

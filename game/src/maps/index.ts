@@ -19,9 +19,9 @@ export default class Map implements IMap {
 
     public rows
 
-    public matrix
-
     public wallColors
+
+    public matrix
 
     public draw() {
         this.eachCell(cell => cell.draw && cell.draw())

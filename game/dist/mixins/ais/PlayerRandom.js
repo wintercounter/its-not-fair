@@ -1,5 +1,5 @@
 import AI from "./";
-import { UP, RIGHT, DOWN, LEFT, MirrorOf } from "../../constants/Directions";
+import { UP, RIGHT, DOWN, LEFT, MirrorOf } from "../../../../../../$hared/constants/Directions";
 import { randomItem } from "../../utils/array";
 import Player from "../../players";
 export default class PlayerRandom extends AI {

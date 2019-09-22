@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import Player from '@/players'
-import { CELL_SIZE } from '@/constants/Sizes'
+import { CELL_SIZE } from '$hared/../constants/Sizes'
 
 export default class PacMan extends Player {
     private PacMan1

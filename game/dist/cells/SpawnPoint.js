@@ -1,7 +1,7 @@
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import * as PIXI from 'pixi.js';
-import { CELL_SIZE } from "../constants/Sizes";
+import { CELL_SIZE } from "../../../constants/Sizes";
 import SimpleSpace from "./SimpleSpace";
 export default class SpawnPoint extends SimpleSpace {
   constructor(...args) {
