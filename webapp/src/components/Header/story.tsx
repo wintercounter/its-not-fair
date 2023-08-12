@@ -1,4 +1,4 @@
-import '@core/styles.global.scss'
+import '@core/styles.global.css'
 
 import React from 'react'
 import { storiesOf } from '@storybook/react'

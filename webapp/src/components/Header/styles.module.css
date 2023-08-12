@@ -1,0 +1,28 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.header {
+	background: #369;
+	padding: 10px 15px;
+	text-align: center;
+}
+
+.header a {
+	padding: 10px 15px;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 10px;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.header a:hover {
+	background: rgba(0,0,0, 0.3);
+}
+
+.header a.active {
+	background: #000;
+	color: #fff;
+}

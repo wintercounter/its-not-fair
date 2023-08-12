@@ -1,8 +1,8 @@
-import './style.scss'
+import './style.css'
 import Main from '@/Main'
 import PacMan from '@/players/PacMan'
 import Monster from '@/players/Monster'
-import One from '@/Maps/One'
+import One from '@/maps/One'
 import PlayerRandom from '@/mixins/ais/PlayerRandom'
 
 /* eslint-disable-next-line */
